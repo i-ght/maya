@@ -47,20 +47,6 @@ type DayAndMonthKnown =
     | DayAndMonthUnknown
 
 let isDateKnown y m d =
-    let monthDefinitinos =
-        Map
-            [ (0, "January")
-              (1, "February")
-              (2, "March")
-              (3, "April")
-              (4, "May")
-              (5, "June")
-              (6, "July")
-              (7, "August")
-              (8, "September")
-              (9, "October")
-              (10, "November")
-              (11, "December") ]
 
     let monthDayLengthDefinitions =
         Map
@@ -106,7 +92,7 @@ let isDateKnown y m d =
                     DayAndMonthUnknown
                 | _ -> DayAndMonthKnown
             else
-                DayAndMonthKnown
+                DayAndMonthUnknown
 
         match monthKnown m with
         | MonthKnown -> accountForLeap y m d
@@ -119,49 +105,52 @@ let isDateKnown y m d =
         | DayAndMonthUnknown -> DateUnknown
     | _ -> DateUnknown
 
-let inty x =
-    if x > 0.0m then floor x else ceil x
-    |> int
+let i i =
+    if i > 0.0m then
+        floor i
+    else
+        ceil i
 
-(* 
-** credit: https://quasar.as.utexas.edu/BillInfo/JulianDatesG.html 
-**
-** 1. Express the date as Y M D, where Y is the year, M is the month number (Jan = 1, Feb =
-** 2, etc.), and D is the day in the month.
-**
-** 2. If the month is January or February, subtract 1 from the year to get a new Y, and add
-** 12 to the month to get a new M. (Thus, we are thinking of January and February as being
-** the 13th and 14th month of the previous year).
-**
-** 3. Dropping the fractional part of all results of all multiplications and divisions, let
-**   A = Y/100
-**   B = A/4
-**   C = 2-A+B
-**   E = 365.25x(Y+4716)
-**   F = 30.6001x(M+1)
-**   JD= C+D+E+F-1524.5
+(* credit: https://fx.sauder.ubc.ca/julian.html 
+
+function julian(Y,M,D,UT) {
+   with (Math) {
+     if (Y < 0) ++Y;
+     if (M > 2) { jy=Y;   jm=M+1;  }
+     else       { jy=Y-1; jm=M+13; }
+     jd2 = (floor(365.25*jy)+floor(30.6001*jm)+D+1720995);
+     if (D+31*(M+12*Y) >= (15+31*(10+12*1582)))
+     { ja=floor(0.01*jy);
+       jd2 += 2-ja+floor(0.25*ja);
+     }
+//
+//     jd=367*Y-floor(7*(Y+floor((M+9)/12))/4)
+//       -floor(3*(floor((Y+(M-9)/7)/100)+1)/4)
+//       +floor(275*M/9)+D+1721028.5+UT/24.0;
+   }
+   return jd2;
+}
 *)
 
 let julianCount (*1.*) y m d =
+    let y = if y < 0.0m then y + 1.0m else y
 
-    (*2.*)
-    let struct (y, m) =
-        match m with
-        | 1.0m
-        | 2.0m -> struct (y - 1.0m, m + 12.0m)
-        | _ -> struct (y, m)
+    let struct (jy, jm) =
+        if m > 2.0m then
+            struct (y, m + 1.0m)
+        else
+            struct (y - 1.0m, m + 13.0m)
+    
+    let jd0 = (floor(365.25m*jy)+floor(30.6001m*jm)+d+1720995.0m)
 
-    (*3.*)
-    let a = y / 100.0m
-    let b = a / 4.0m
-    let c = 2.0m - a + b
-    let e = 365.25m * (y + 4716.0m)
-    let f = 30.6001m * (m + 1.0m)
-
-    let z = c + d + e + f - 1524.5m
-
-    let jd = z
-    jd
+    let jd1 =
+        if (d+31.0m*(m+12.0m*y) >= (15.0m+31.0m*(10.0m+12.0m*1582.0m))) then
+            let ja= floor(0.01m*jy)
+            2.0m-ja+floor(0.25m*ja)
+        else
+            jd0
+            
+    jd1
 
 (*
 ** credit due: 
@@ -172,20 +161,42 @@ let julianCount (*1.*) y m d =
 ** events whose dates were recorded both by Spaniards and civilizations using the Mayan 
 ** calendar, scholars have sought to correlate the Mayan and Gregorian calendars. According
 ** to the most widely accepted correlation (the “Goodman-Martinez-Thompson Correlation”) the
-** current Mayan epoch began on Wednesday 11 August 3113 bce (Gregorian) which is Julian
-** date 584,282.5.
+** current Mayan epoch began on Wednesday 11 August 3113 bce (Gregorian) which is Julian date 584,282.65.
 *)
 let longCount jdn =
 
-    let long = [ 0; 0; 0; 0; 0 ]
+    let mutable lng = [|0.0m; 0.0m; 0.0m; 0.0m; 0.0m|]
 
     let mayaConstructionJdn = 584282.5m
 
-    let longCount = round jdn - mayaConstructionJdn
-    ()
+    let mutable longCount = (*round*) jdn - mayaConstructionJdn
 
-let maya m d y =
+    printfn "long count=%M" longCount
 
-    ()
 
-printfn "Hello from F#"
+    lng.[0] <- floor longCount / 144000.0m
+    longCount <- longCount % 144000.0m;
+    
+    lng.[1] <- floor longCount / 7200.0m
+    longCount <- longCount % 7200.0m
+
+    lng.[2] <- floor longCount / 360.0m
+    longCount <- longCount % 360.0m
+
+    lng.[3] <- longCount / 20.0m
+
+    lng.[4] <- longCount % 20.0m
+
+    lng |> List.ofSeq
+
+let maya y m d =
+    let lng = longCount <| julianCount y m d
+    lng |> List.map int
+
+let now = System.DateTimeOffset.Now
+
+// printfn "%A" 
+// <| maya (decimal now.Year) (decimal now.Month) (decimal now.Day)
+
+printfn "%A" <| julianCount -4714.0m 1.0m 1.0m
+printfn "%A" <| maya -2023.0m 2.0m 19.0m
