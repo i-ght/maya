@@ -31,85 +31,6 @@
 ** Maya creation, August 11, 3114 BCE. 
 *)
 
-[<Struct>]
-type DateKnown =
-    | DateKnown
-    | DateUnknown
-
-[<Struct>]
-type MonthKnown =
-    | MonthKnown
-    | MonthUnknown
-
-[<Struct>]
-type DayAndMonthKnown =
-    | DayAndMonthKnown
-    | DayAndMonthUnknown
-
-let isDateKnown y m d =
-
-    let monthDayLengthDefinitions =
-        Map
-            [ (0, 31)
-              (1, 29)
-              (2, 31)
-              (3, 30)
-              (4, 31)
-              (5, 30)
-              (6, 31)
-              (7, 31)
-              (8, 30)
-              (9, 31)
-              (10, 30)
-              (11, 31) ]
-
-    let monthKnown m =
-        if m > 0 && m < monthDayLengthDefinitions.Count then
-            MonthKnown
-        else
-            MonthUnknown
-
-    let know (mdefs: Map<int, int>) y m d =
-
-(*
-** Credit due: https://www.mathsisfun.com/leap-years.html
-** How to know if it is a Leap Year:
-**
-** yes Leap Years are any year that can be exactly divided by 4
-**                                                           (such as 2016, 2020, 2024, etc)
-**   not except if it can be exactly divided by 100, then it isn't (such as 2100, 2200, etc)
-**     yes except if it can be exactly divided by 400, then it is (such as 2000, 2400)
-**
-*)
-        let accountForLeap y m d =
-            let monthDayLength = mdefs.[m]
-
-            if d > 0 && d <= monthDayLength then
-                match (m, d) with
-                (*leap accounting *)
-                | (1, 29) when y % 4 <> 0 -> DayAndMonthUnknown
-                | (1, 29) when y > 1582 && y % 4 = 0 && y % 100 = 0 && y % 400 <> 0 ->
-                    DayAndMonthUnknown
-                | _ -> DayAndMonthKnown
-            else
-                DayAndMonthUnknown
-
-        match monthKnown m with
-        | MonthKnown -> accountForLeap y m d
-        | MonthUnknown -> DayAndMonthUnknown
-
-    match m with
-    | m when m <= 0 && m < monthDayLengthDefinitions.Count ->
-        match know monthDayLengthDefinitions y m d with
-        | DayAndMonthKnown -> DateKnown
-        | DayAndMonthUnknown -> DateUnknown
-    | _ -> DateUnknown
-
-let i i =
-    if i > 0.0m then
-        floor i
-    else
-        ceil i
 
 (* credit: https://fx.sauder.ubc.ca/julian.html 
 
@@ -132,7 +53,7 @@ function julian(Y,M,D,UT) {
 }
 *)
 
-let julianCount (*1.*) y m d =
+let julianCount y m d =
     let y = if y < 0.0m then y + 1.0m else y
 
     let struct (jy, jm) =
@@ -146,7 +67,7 @@ let julianCount (*1.*) y m d =
     let jd1 =
         if (d+31.0m*(m+12.0m*y) >= (15.0m+31.0m*(10.0m+12.0m*1582.0m))) then
             let ja= floor(0.01m*jy)
-            2.0m-ja+floor(0.25m*ja)
+            jd0 + 2.0m-ja+floor(0.25m*ja)
         else
             jd0
             
@@ -167,12 +88,9 @@ let longCount jdn =
 
     let mutable lng = [|0.0m; 0.0m; 0.0m; 0.0m; 0.0m|]
 
-    let mayaConstructionJdn = 584282.5m
+    let mayaConstructJdn = 584282.5m
 
-    let mutable longCount = (*round*) jdn - mayaConstructionJdn
-
-    printfn "long count=%M" longCount
-
+    let mutable longCount = jdn - mayaConstructJdn
 
     lng.[0] <- floor longCount / 144000.0m
     longCount <- longCount % 144000.0m;
@@ -195,8 +113,8 @@ let maya y m d =
 
 let now = System.DateTimeOffset.Now
 
-// printfn "%A" 
-// <| maya (decimal now.Year) (decimal now.Month) (decimal now.Day)
+printfn "%A" 
+<| maya (decimal now.Year) (decimal now.Month) (decimal now.Day)
 
-printfn "%A" <| julianCount -4714.0m 1.0m 1.0m
-printfn "%A" <| maya -2023.0m 2.0m 19.0m
+printfn "%A" <| maya 2012.0m 12.0m 20.0m
+printfn "%A" <| maya 2012.0m 12.0m 21.0m
