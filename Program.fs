@@ -113,6 +113,10 @@ let maya y m d =
 
 let now = System.DateTimeOffset.Now
 
+(* figure out how to convert gregorian to julian dates: https://www.fourmilab.ch/documents/calendar/*)
+
+printfn "%A" <| maya -3114.0m 09.0m 6.0m
+
 printfn "%A" 
 <| maya (decimal now.Year) (decimal now.Month) (decimal now.Day)
 
