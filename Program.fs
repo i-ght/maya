@@ -5,15 +5,16 @@
 ** The author disclaims copyright to this source code. 
 **
 ** hymn:
-** In dense darkness O Mother, Thy formless beauty sparkles;
-** Therefore the yogis meditate in a dark mountain cave.
-** In the lap of boundless dark, on Mahanirvana's waves upborne
-** Peace flows serene and inexhaustible.
-**
-** Taking the form of the Void, in the robe of darkness wrapped,
-** Who art Thou, Mother, seated alone in the shrine of samadhi?
-** From the Lotus of Thy fear-scattering Feet flash Thy love's lightnings;
-** Thy Spirit-Face shines forth with laughter terrible and loud!
+O Kali! Thou hast brushed all difficulties aside.
+Vedas and Tantras declare and SIva confirms - wilt Thou not admit this?
+If Thou find a cremation ground, O Mother, Thou preferest it to a place set with jewells. 
+O Mother! Thou and th Consort are all alike; He desists not fromc rushing hemp leaves.
+He who is Thy devotee, Mother, has a different kind of lustre.
+He is seldom clad in rags, cubs his body with ashes, and weawrs matted hair.
+Thou brought'st me to earth and gavest me untold misery.
+Yet I Mutter Kali's name - see how courageous I am!
+People broadcast all around - Rama Prasada is Kali's son
+Who will understand the secret of Mother's treatment with Her son?
 **
 ** Credit due: 
 ** - https://maya.nmai.si.edu/sites/all/themes/mayatime/js/calendar-converter/calendar-converter-en.js?rpyhor
@@ -33,112 +34,143 @@ open System
 (* credit: https://fx.sauder.ubc.ca/julian.html *)
 
 let julianCount y m d =
-    let y = if y < 0.0m then y + 1.0m else y
+    let y = if y < 0.0 then y + 1.0 else y
 
     let struct (jy, jm) =
-        if m > 2.0m then
-            struct (y, m + 1.0m)
+        if m > 2.0 then
+            struct (y, m + 1.0)
         else
-            struct (y - 1.0m, m + 13.0m)
+            struct (y - 1.0, m + 13.0)
     
-    let jd0 = (floor(365.25m*jy)+floor(30.6001m*jm)+d+1720995.0m)
+    (* why these numbers? what do they mean? 
+       i don't know, i just copy and pasted them *)
+    let jd0 = (floor(365.25*jy)+floor(30.6001*jm)+d+1720995.0)
 
     let jd1 =
-        if (d+31.0m*(m+12.0m*y) >= (15.0m+31.0m*(10.0m+12.0m*1582.0m))) then
-            let ja = floor(0.01m*jy)
-            jd0 + 2.0m-ja+floor(0.25m*ja)
+        if (d+31.0*(m+12.0*y) >= (15.0+31.0*(10.0+12.0*1582.0))) then
+            let ja = floor(0.01*jy)
+            jd0 + 2.0-ja+floor(0.25*ja)
         else
             jd0
             
     jd1
 
+(*
+
++----------+----------+---------+
+|   Head   |   Tail   |  Days   |
++----------+----------+---------+
+| 1 kin    | None     |       1 |
+| 1 uinal  | 20 kin   |      20 |
+| 1 tun    | 18 uinal |     360 |
+| 1 katun  | 20 tun   |   7,200 |
+| 1 baktun | 20 katun | 140,000 |
++----------+----------+---------+
+
+Thus the Maya developed a modified base 20 system in which a date is represented by a
+number written (in modern Indo-Arabic notation) as: 
+
+a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
+
+where the third place value is not 202 but 18×20. After the third place, each higher place
+is 20 times the previous place value. So the system breaks only in the third place.
+
+
+https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
+
+*)
+
 type MayaTimeCycle =
-    | Kin
-    | Uinal
-    | Tun
+    | Kin   
+    | Uinal 
+    | Tun   
     | Katun
     | Baktun
 with
     member cycle.DayLength =
-        match cycle with
-        | Kin -> pown 20.0m 0
-        | Uinal -> pown 20.0m 1
-        | Tun -> 18.0m * pown 20.0m 1
-        | Katun -> 18.0m * pown 20.0m 2
-        | Baktun -> 18.0m * pown 20.0m 3
+        match cycle with                 
+        | Kin    ->        20.0 ** 0 (* 1 *)
+        | Uinal  ->        20.0 ** 1 (* 20 *)
+        | Tun    -> 18.0 * 20.0 ** 1 (* 360 *)
+        | Katun  -> 18.0 * 20.0 ** 2 (* 7,200 *)
+        | Baktun -> 18.0 * 20.0 ** 3 (* 144,000 *)
+        |> int
+
+module Maya =
 
 (*
-    Thus the Maya developed a modified base 20 system in which a date is represented by a
-    number written (in modern Indo-Arabic notation) as: 
 
-    a.b.c.d.e = a(18×pown 20 3) + b(18×pown 20 2) + c(18×pown 20 1) + d(pown 20 1) + e(pown
-    20 0)
+Using astronomical events recorded both by Mayan and European astronomers, and historical
+events whose dates were recorded both by Spaniards and civilizations using the Mayan
+calendar, scholars have sought to correlate the Mayan and Gregorian calendars. According to
+the most widely accepted correlation (the “Goodman-Martinez-Thompson Correlation”) the
+current Mayan epoch began on Wednesday 11 August 3113 bce (Gregorian) (September 9, 3114 BCE
+Julian Calendar) which is Julian date 584,282.5.
+
+https://www.sizes.com/time/cal_mayan.htm
 *)
-
-let mayaLongCount y m d =
-    let julian = julianCount y m d
-
-    ()
-
-let longCount jdn =
-
-    let mutable lng = [|0.0m; 0.0m; 0.0m; 0.0m; 0.0m|]
-
-    let mayaConstructJdn = 584282.5m
-
-    let days = jdn - mayaConstructJdn;
-
-    (*
-        +----------+----------+---------+
-        |   Head   |   Tail   |  Days   |
-        +----------+----------+---------+
-        | 1 kin    | None     |       1 |
-        | 1 uinal  | 20 kin   |      20 |
-        | 1 tun    | 18 uinal |     360 |
-        | 1 katun  | 20 tun   |   7,200 |
-        | 1 baktun | 20 katun | 140,000 |
-        +----------+----------+---------+
-
-    *)
-
-    let mutable longCount = jdn - mayaConstructJdn
-
-    lng.[0] <- longCount / 144000.0m
-    longCount <- longCount % 144000.0m;
+    let [<Literal>] Construct = 584282.5
     
-    lng.[1] <- longCount / 7200.0m
-    longCount <- longCount % 7200.0m
+    let date y m d = 
+        
+        let julia = julianCount y m d
+        let daysSinceConstruct = 
+            julia - Construct
+            |> int
 
-    lng.[2] <- longCount / 360.0m
-    longCount <- longCount % 360.0m
+        let base' = 20
+        let rec digis value digits =
+            let struct (q, r) = value / base', value % base'
+            if (0 = q) then 
+                r :: digits
+            else 
+                digis q <| r :: digits
 
-    lng.[3] <- longCount / 20.0m
+        let tun (* ⚫ *) = 360
 
-    lng.[4] <- longCount % 20.0m
+        let struct (turnsOfTheWheel, daysRemaining) =
+            daysSinceConstruct / tun, daysSinceConstruct % tun
 
-    lng |> List.ofSeq
+        let struct (black, white) = digis turnsOfTheWheel [], digis daysRemaining []
+        black @ white
 
 let maya y m d =
-    let lng = longCount <| julianCount y m d
-    lng |> List.map int
+    Maya.date y m d
 
 let argv = Environment.GetCommandLineArgs() 
 
 let struct (y, m, d) =
     match argv.Length with
     | 3 ->
-        struct(
-            Decimal.Parse(argv.[0]),
-            Decimal.Parse(argv.[1]),
-            Decimal.Parse(argv.[2])
+        struct (
+            int argv[0],
+            int argv[1],
+            int argv[2]
         )
     | _ ->
         let now = DateTimeOffset.Now
-        ValueTuple.Create(now.Year, now.Month, now.Day)
+        now.Year, now.Month, now.Day
 
-printfn "%A" <| maya -3113.0m 9.0m 6.0m
+let mayaOK (date: int list) =
+    if date.Length < 5 then
+        false
+    else 
+        match struct (date.[0], date.[1], date.[2], date.[3],date.[4]) with
+        | struct (baktun, katun, tun, uinal, kin)
+            when List.contains baktun [0..13]
+            &&   List.contains katun  [0..19]
+            &&   List.contains tun    [0..19]
+            &&   List.contains uinal  [0..18]
+            &&   List.contains kin    [0..19] -> true
+        | _                                   -> false
 
-printfn "%A" <| maya y m d
+let printMaya (date: int list) = 
+    let fmt = sprintf "%02i"
+    let formatted = List.map fmt date
+    let joined = String.Join('.', formatted)
+    printfn "%s" joined
 
+
+printMaya <| maya y m d
 
 exit 0
