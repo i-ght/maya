@@ -72,9 +72,8 @@ number written (in modern Indo-Arabic notation) as:
 
 a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
 
-where the third place value is not 202 but 18×20. After the third place, each higher place
+where the third place value is not 20**2 but 18*20. After the third place, each higher place
 is 20 times the previous place value. So the system breaks only in the third place.
-
 
 https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
 
@@ -98,6 +97,26 @@ with
 
 module Maya =
 
+
+    let OK (date: int list) =
+        if date.Length < 5 then
+            false
+        else 
+            match struct (date.[0], date.[1], date.[2], date.[3],date.[4]) with
+            | struct (baktun, katun, tun, uinal, kin)
+                when List.contains baktun [0..13]
+                &&   List.contains katun  [0..19]
+                &&   List.contains tun    [0..19]
+                &&   List.contains uinal  [0..18]
+                &&   List.contains kin    [0..19] -> true
+            | _                                   -> false
+
+    let print (date: int list) = 
+        let fmt = sprintf "%02i"
+        let formatted = List.map fmt date
+        let joined = String.Join('.', formatted)
+        printfn "%s" joined
+
 (*
 
 Using astronomical events recorded both by Mayan and European astronomers, and historical
@@ -120,12 +139,23 @@ https://www.sizes.com/time/cal_mayan.htm
 
         let base' = 20
         let rec digis value digits =
-            let struct (q, r) = value / base', value % base'
+            let struct (q, r) =
+                value / base', value % base'
             if (0 = q) then 
                 r :: digits
             else 
                 digis q <| r :: digits
 
+(*
+        a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
+
+        where the third place value is not 20**2 but 18*20. After the third place, each
+        higher place is 20 times the previous place value. So the system breaks only in the
+        third place.
+
+        begin from the center;
+        crafty clever creatures, these mayans 
+*)
         let tun (* ⚫ *) = 360
 
         let struct (turnsOfTheWheel, daysRemaining) =
@@ -135,43 +165,20 @@ https://www.sizes.com/time/cal_mayan.htm
             digis turnsOfTheWheel [], digis daysRemaining []
         black @ white
 
-let maya y m d =
-    Maya.date y m d
-
 let argv = Environment.GetCommandLineArgs() 
 
 let struct (y, m, d) =
     match argv.Length with
-    | 3 ->
+    | 4 ->
         struct (
-            int argv[0],
             int argv[1],
-            int argv[2]
+            int argv[2],
+            int argv[3]
         )
     | _ ->
         let now = DateTimeOffset.Now
         now.Year, now.Month, now.Day
 
-let mayaOK (date: int list) =
-    if date.Length < 5 then
-        false
-    else 
-        match struct (date.[0], date.[1], date.[2], date.[3],date.[4]) with
-        | struct (baktun, katun, tun, uinal, kin)
-            when List.contains baktun [0..13]
-            &&   List.contains katun  [0..19]
-            &&   List.contains tun    [0..19]
-            &&   List.contains uinal  [0..18]
-            &&   List.contains kin    [0..19] -> true
-        | _                                   -> false
-
-let printMaya (date: int list) = 
-    let fmt = sprintf "%02i"
-    let formatted = List.map fmt date
-    let joined = String.Join('.', formatted)
-    printfn "%s" joined
-
-
-printMaya <| maya y m d
+Maya.print <| Maya.date y m d
 
 exit 0
