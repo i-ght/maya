@@ -144,7 +144,12 @@ place is 20 times the previous place value. So the system breaks only in the thi
 
 begin from the center;
 clever mayans 
+
+REMINDER: More cleverness to deconstruct. Baktuns are limited by the value 13. With 12 wheel
+spokes and a center point, to form 13.
 *)
+        (* Obvious joint: watch the world go round as we do our thing 
+           && Halfsharkalligatorhalfman*)
         let tun (* ⚫ *) = 360
 
         let struct (turnsOfTheWheel, daysRemaining) =
@@ -153,9 +158,11 @@ clever mayans
         let black = mayaDigis turnsOfTheWheel []
         let white = mayaDigis daysRemaining []
         match struct (black, white) with
-        | ([0] as black, white) -> 
+        | ([_] as black, ([_] as white)) ->
+            black @ [0; 0 ;0] @ white
+        | ([_] as black, white) -> 
             0 :: black @ white
-        | (black, ([0] as white)) ->
+        | (black, ([_] as white)) ->
             black @ 0 :: white
         | (black, white) -> 
             black @ white
@@ -175,6 +182,17 @@ let struct (y, m, d) =
         let now = DateTimeOffset.Now
         now.Year, now.Month, now.Day
 
+Maya.print <| Maya.date -3114 9 5
+Maya.print <| Maya.date -3114 9 6
+Maya.print <| Maya.date -3114 9 7
+
+Maya.print <| Maya.date 2012 12 20
+Maya.print <| Maya.date 2013 12 21
+Maya.print <| Maya.date 2012 12 22
+
+
+
 Maya.print <| Maya.date y m d
+
 
 exit 0
