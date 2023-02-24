@@ -95,6 +95,11 @@ with
         | Baktun -> 18.0 * 20.0 ** 3 (* 144,000 *)
         |> int
 
+[<Struct>]
+type BlackOrWhite =
+    | Black
+    | White
+
 module Maya =
 
     let print (date: int list) = 
@@ -102,7 +107,6 @@ module Maya =
         let formatted = List.map fmt date
         let joined = String.Join('.', formatted)
         printfn "%s" joined
-
 (*
 Using astronomical events recorded both by Mayan and European astronomers, and historical
 events whose dates were recorded both by Spaniards and civilizations using the Mayan
@@ -124,13 +128,13 @@ https://www.sizes.com/time/cal_mayan.htm
             |> int
 
         let base' = 20
-        let rec digis value digits =
+        let rec mayaDigis value digits =
             let struct (q, r) =
                 value / base', value % base'
             if (0 = q) then 
                 r :: digits
             else 
-                digis q <| r :: digits
+                mayaDigis q <| r :: digits
 
 (*
 a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
@@ -139,16 +143,23 @@ where the third place value is not 20**2 but 18*20. After the third place, each 
 place is 20 times the previous place value. So the system breaks only in the third place.
 
 begin from the center;
-crafty clever creatures, these mayans 
+clever mayans 
 *)
         let tun (* ⚫ *) = 360
 
         let struct (turnsOfTheWheel, daysRemaining) =
             daysSinceConstruct / tun, daysSinceConstruct % tun
 
-        let struct (black, white) =
-            digis turnsOfTheWheel [], digis daysRemaining []
-        black @ white
+        let black = mayaDigis turnsOfTheWheel []
+        let white = mayaDigis daysRemaining []
+        match struct (black, white) with
+        | ([0] as black, white) -> 
+            0 :: black @ white
+        | (black, ([0] as white)) ->
+            black @ 0 :: white
+        | (black, white) -> 
+            black @ white
+    
 
 let argv = Environment.GetCommandLineArgs() 
 
