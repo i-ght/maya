@@ -97,20 +97,6 @@ with
 
 module Maya =
 
-
-    let OK (date: int list) =
-        if date.Length < 5 then
-            false
-        else 
-            match struct (date.[0], date.[1], date.[2], date.[3],date.[4]) with
-            | struct (baktun, katun, tun, uinal, kin)
-                when List.contains baktun [0..13]
-                &&   List.contains katun  [0..19]
-                &&   List.contains tun    [0..19]
-                &&   List.contains uinal  [0..18]
-                &&   List.contains kin    [0..19] -> true
-            | _                                   -> false
-
     let print (date: int list) = 
         let fmt = sprintf "%02i"
         let formatted = List.map fmt date
@@ -118,7 +104,6 @@ module Maya =
         printfn "%s" joined
 
 (*
-
 Using astronomical events recorded both by Mayan and European astronomers, and historical
 events whose dates were recorded both by Spaniards and civilizations using the Mayan
 calendar, scholars have sought to correlate the Mayan and Gregorian calendars. According to
@@ -147,14 +132,13 @@ https://www.sizes.com/time/cal_mayan.htm
                 digis q <| r :: digits
 
 (*
-        a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
+a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
 
-        where the third place value is not 20**2 but 18*20. After the third place, each
-        higher place is 20 times the previous place value. So the system breaks only in the
-        third place.
+where the third place value is not 20**2 but 18*20. After the third place, each higher 
+place is 20 times the previous place value. So the system breaks only in the third place.
 
-        begin from the center;
-        crafty clever creatures, these mayans 
+begin from the center;
+crafty clever creatures, these mayans 
 *)
         let tun (* ⚫ *) = 360
 
