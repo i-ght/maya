@@ -108,8 +108,9 @@ Using astronomical events recorded both by Mayan and European astronomers, and h
 events whose dates were recorded both by Spaniards and civilizations using the Mayan
 calendar, scholars have sought to correlate the Mayan and Gregorian calendars. According to
 the most widely accepted correlation (the “Goodman-Martinez-Thompson Correlation”) the
-current Mayan epoch began on Wednesday 11 August 3113 bce (Gregorian) (September 9, 3114 BCE
-Julian Calendar) which is Julian date 584,282.5.
+current Mayan epoch began on Wednesday 11 August 3113 bce (Gregorian) (September 6, 3114 BCE
+Julian Calendar https://www.timeanddate.com/calendar/mayan.html) which is Julian date
+584,282.5.
 
 https://www.sizes.com/time/cal_mayan.htm
 *)
