@@ -131,7 +131,8 @@ https://www.sizes.com/time/cal_mayan.htm
         let struct (turnsOfTheWheel, daysRemaining) =
             daysSinceConstruct / tun, daysSinceConstruct % tun
 
-        let struct (black, white) = digis turnsOfTheWheel [], digis daysRemaining []
+        let struct (black, white) =
+            digis turnsOfTheWheel [], digis daysRemaining []
         black @ white
 
 let maya y m d =
