@@ -158,14 +158,10 @@ spokes and a center point, to form 13.
         let black = mayaDigis turnsOfTheWheel []
         let white = mayaDigis daysRemaining []
         match struct (black, white) with
-        | ([_] as black, ([_] as white)) ->
-            black @ [0; 0 ;0] @ white
-        | ([_] as black, white) -> 
-            0 :: black @ white
-        | (black, ([_] as white)) ->
-            black @ 0 :: white
-        | (black, white) -> 
-            black @ white
+        | ([_], [_]) -> black @ [0; 0 ;0] @ white
+        | ([_],  _)  -> 0 :: black @ white
+        | (_  , [_]) -> black @ 0 :: white
+        | _          -> black @ white
     
 
 let argv = Environment.GetCommandLineArgs() 
