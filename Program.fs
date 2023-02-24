@@ -6,11 +6,11 @@
 **
 ** hymn:
 O Kali! Thou hast brushed all difficulties aside.
-Vedas and Tantras declare and SIva confirms - wilt Thou not admit this?
-If Thou find a cremation ground, O Mother, Thou preferest it to a place set with jewells. 
-O Mother! Thou and th Consort are all alike; He desists not fromc rushing hemp leaves.
+Vedas and Tantras declare and Siva confirms - wilt Thou not admit this?
+If Thou find a cremation ground, O Mother, Thou preferest it to a palace set with jewells. 
+O Mother! Thou and thy Consort are all alike; He desists not from crushing hemp leaves.
 He who is Thy devotee, Mother, has a different kind of lustre.
-He is seldom clad in rags, cubs his body with ashes, and weawrs matted hair.
+He is seldom clad in rags, rubs his body with ashes, and wears matted hair.
 Thou brought'st me to earth and gavest me untold misery.
 Yet I Mutter Kali's name - see how courageous I am!
 People broadcast all around - Rama Prasada is Kali's son
