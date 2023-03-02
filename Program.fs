@@ -23,7 +23,7 @@ Who will understand the secret of Mother's treatment with Her son?
 ** - https://www.sizes.com/time/cal_mayan.htm
 ** - http://www.madore.org/~david/misc/calendar.html
 ** - https://www.fourmilab.ch/documents/calendar/ 
-**
+** - https://irp-cdn.multiscreensite.com/7b1aa4fb/files/uploaded/Thirteen%20Baktun%20Final.pdf ~ Thirteen Baktun: A Recalculation of the Calender End and the Length of the World Age by Loren W. Jeffries ©2018
 ** The Long Count calendar keeps track of the days that have passed since the mythical
 ** starting date of the Maya creation, August 11, 3114 BCE.
 ** (September 9, 3114 BCE Julian Calendar) 
@@ -34,13 +34,14 @@ open System
 (* credit: https://fx.sauder.ubc.ca/julian.html *)
 
 let julianCount y m d =
-    let y = if y < 0.0 then y + 1.0 else y
+    let y = if y < 0 then y + 1 else y
+    let struct (y, m, d) = float y, float m, float d
 
     let struct (jy, jm) =
-        if m > 2.0 then
-            struct (y, m + 1.0)
+        if m > 2 then
+            (y, m + 1.0)
         else
-            struct (y - 1.0, m + 13.0)
+            (y - 1.0, m + 13.0)
     
     (* why these numbers? what do they mean? 
        i don't know, i just copy and pasted them *)
@@ -53,7 +54,7 @@ let julianCount y m d =
         else
             jd0
             
-    jd1
+    jd1 - 0.5
 
 (*
 
@@ -77,8 +78,10 @@ is 20 times the previous place value. So the system breaks only in the third pla
 
 https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
 
+
 *)
 
+(*
 type MayaTimeCycle =
     | Kin   
     | Uinal 
@@ -94,12 +97,7 @@ with
         | Katun  -> 18.0 * 20.0 ** 2 (* 7,200 *)
         | Baktun -> 18.0 * 20.0 ** 3 (* 144,000 *)
         |> int
-
-[<Struct>]
-type BlackOrWhite =
-    | Black
-    | White
-
+ *)
 module Maya =
 
     let print (date: int list) = 
@@ -146,20 +144,25 @@ begin from the center;
 clever mayans 
 
 REMINDER: More cleverness to deconstruct. Baktuns are limited by the value 13. With 12 wheel
-spokes and a center point, to form 13.
+slices and a center point, to form 13.
 *)
         (* Obvious joint: watch the world go round as we do our thing 
            && Halfsharkalligatorhalfman*)
         let tun (* ⚫ *) = 360
 
-        let struct (turnsOfTheWheel, daysRemaining) =
-            daysSinceConstruct / tun, daysSinceConstruct % tun
+        let struct (turnsOfTheWheel,daysRemaining) =
+            daysSinceConstruct / tun,
+            daysSinceConstruct % tun
 
-        let black = mayaDigis turnsOfTheWheel []
-        let white = mayaDigis daysRemaining []
+        let [black; white] = 
+            [turnsOfTheWheel; daysRemaining]
+            |> List.map (function | i -> mayaDigis i [])
+
+(*         let black = mayaDigis turnsOfTheWheel []
+        let white = mayaDigis daysRemaining [] *)
         match struct (black, white) with
         | ([_], [_]) -> black @ [0; 0 ;0] @ white
-        | ([_],  _)  -> 0 :: black @ white
+        | ([_],  _ ) -> 0 :: black @ white
         | (_  , [_]) -> black @ 0 :: white
         | _          -> black @ white
     
@@ -178,14 +181,14 @@ let struct (y, m, d) =
         let now = DateTimeOffset.Now
         now.Year, now.Month, now.Day
 
-Maya.print <| Maya.date -3114 9 5
+(* Maya.print <| Maya.date -3114 9 5
 Maya.print <| Maya.date -3114 9 6
 Maya.print <| Maya.date -3114 9 7
 
 Maya.print <| Maya.date 2012 12 20
-Maya.print <| Maya.date 2013 12 21
-Maya.print <| Maya.date 2012 12 22
-
+Maya.print <| Maya.date 2013 12 21 *)
+Maya.print <| Maya.date 2013 12 15
+Maya.print <| Maya.date 2012 12 21
 
 
 Maya.print <| Maya.date y m d
