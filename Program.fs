@@ -98,6 +98,9 @@ with
         | Baktun -> 18.0 * 20.0 ** 3 (* 144,000 *)
         |> int
  *)
+
+let fear<'a> msg = invalidOp<'a> msg
+
 module Maya =
 
     let print (date: int list) =
@@ -118,18 +121,22 @@ Julian Calendar https://www.timeanddate.com/calendar/mayan.html) which is Julian
 
 https://www.sizes.com/time/cal_mayan.htm
 *)
-    let [<Literal>] Construct = 584282.5
-    
+    [<Literal>] 
+    let private CONSTRUCT = 584282.5
+    [<Literal>]
+    let private WHEEL_TURN_CONSTITUTION = 360
+    [<Literal>]
+    let private NUMBER_BASE_SYSTEM = 20
+
     let date y m d = 
         
         let julia = julianCount y m d
         let daysSinceConstruct = 
-            julia - Construct
+            julia - CONSTRUCT
             |> int
 
-        let base' = 20
         let rec mayaDigis value digits =
-            match struct (value / base', value % base') with
+            match struct (value / NUMBER_BASE_SYSTEM, value % NUMBER_BASE_SYSTEM) with
             | (q, r) when q = 0 -> r :: digits
             | (q, r) -> mayaDigis q <| r ::digits
 
@@ -146,19 +153,16 @@ clever mayans
 REMINDER: More cleverness to deconstruct. Baktuns are limited by the value 13. With 12 wheel
 slices and a center point, to form 13.
 *)
-        (* Obvious joint: watch the world go round as we do our thing 
-           && Halfsharkalligatorhalfman*)
-        let tun (* ⚫ *) = 360
 
         let struct (turnsOfTheWheel,daysRemaining) =
-            daysSinceConstruct / tun,
-            daysSinceConstruct % tun
+            daysSinceConstruct / WHEEL_TURN_CONSTITUTION,
+            daysSinceConstruct % WHEEL_TURN_CONSTITUTION
 
         let struct (black, white) =
             [turnsOfTheWheel; daysRemaining]
             |> List.map (function | i -> mayaDigis i [])
             |> function | [black; white]-> (black, white)
-                        | _ -> invalidOp<struct (int list * int list)> "cease warning"
+                        | _ -> fear<struct (int list * int list)> "cease warning"
 
         match struct (black, white) with
         | ([_], [_]) -> black @ [0; 0; 0] @ white
@@ -170,14 +174,13 @@ slices and a center point, to form 13.
 let argv = Environment.GetCommandLineArgs() 
 
 let struct (y, m, d) =
-    match argv.Length with
-    | 4 ->
+    if 4 = argv.Length then
         struct (
             int argv[1],
             int argv[2],
             int argv[3]
         )
-    | _ ->
+    else
         let now = DateTimeOffset.Now
         now.Year, now.Month, now.Day
 
