@@ -100,11 +100,13 @@ with
  *)
 module Maya =
 
-    let print (date: int list) = 
-        let fmt = sprintf "%02i"
-        let formatted = List.map fmt date
-        let joined = String.Join('.', formatted)
-        printfn "%s" joined
+    let print (date: int list) =
+        if List.length date <= 13 then
+            let fmt = sprintf "%02i"
+            let formatted = List.map fmt date
+            let joined = String.Join('.', formatted)
+            printfn "%s" joined
+            
 (*
 Using astronomical events recorded both by Mayan and European astronomers, and historical
 events whose dates were recorded both by Spaniards and civilizations using the Mayan
@@ -127,12 +129,10 @@ https://www.sizes.com/time/cal_mayan.htm
 
         let base' = 20
         let rec mayaDigis value digits =
-            let struct (q, r) =
-                value / base', value % base'
-            if (0 = q) then 
-                r :: digits
-            else 
-                mayaDigis q <| r :: digits
+            match struct (value / base', value % base') with
+            | (q, r) when q = 0 -> r :: digits
+            | (q, r) -> mayaDigis q <| r ::digits
+
 
 (*
 a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
@@ -154,18 +154,17 @@ slices and a center point, to form 13.
             daysSinceConstruct / tun,
             daysSinceConstruct % tun
 
-        let [black; white] = 
+        let struct (black, white) =
             [turnsOfTheWheel; daysRemaining]
             |> List.map (function | i -> mayaDigis i [])
+            |> function | [black; white]-> (black, white)
+                        | _ -> invalidOp<struct (int list * int list)> "cease warning"
 
-(*         let black = mayaDigis turnsOfTheWheel []
-        let white = mayaDigis daysRemaining [] *)
         match struct (black, white) with
-        | ([_], [_]) -> black @ [0; 0 ;0] @ white
+        | ([_], [_]) -> black @ [0; 0; 0] @ white
         | ([_],  _ ) -> 0 :: black @ white
-        | (_  , [_]) -> black @ 0 :: white
-        | _          -> black @ white
-    
+        | ( _ , [_]) -> black @ 0 :: white
+        |   _        -> black @ white
 
 let argv = Environment.GetCommandLineArgs() 
 
@@ -188,6 +187,8 @@ Maya.print <| Maya.date -3114 9 7
 Maya.print <| Maya.date 2012 12 20
 Maya.print <| Maya.date 2013 12 21 *)
 Maya.print <| Maya.date 2013 12 15
+Maya.print <| Maya.date 2013 12 16
+
 Maya.print <| Maya.date 2012 12 21
 
 
