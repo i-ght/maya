@@ -166,6 +166,7 @@ slices and a center point, to form 13.
         | ( _ , [_]) -> black @ 0 :: white
         |   _        -> black @ white
 
+
 let argv = Environment.GetCommandLineArgs() 
 
 let struct (y, m, d) =
@@ -180,19 +181,7 @@ let struct (y, m, d) =
         let now = DateTimeOffset.Now
         now.Year, now.Month, now.Day
 
-(* Maya.print <| Maya.date -3114 9 5
-Maya.print <| Maya.date -3114 9 6
-Maya.print <| Maya.date -3114 9 7
-
-Maya.print <| Maya.date 2012 12 20
-Maya.print <| Maya.date 2013 12 21 *)
-Maya.print <| Maya.date 2013 12 15
-Maya.print <| Maya.date 2013 12 16
-
-Maya.print <| Maya.date 2012 12 21
-
 
 Maya.print <| Maya.date y m d
-
 
 exit 0
