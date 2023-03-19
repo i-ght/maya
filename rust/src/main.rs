@@ -35,7 +35,7 @@ const WHEEL_TURN_RADIX: i32 = 360;
 const RADIX: i32 = 20;
 
 fn maya_digis(julian_day: i32) -> Vec<i32> {
-    
+
     fn rec(value: i32, digis: &mut LinkedList<i32>) -> Vec<i32> {
 
         match (value / RADIX, value % RADIX) {
