@@ -17,6 +17,11 @@ open System
 
 module Maya =
 
+    [<Struct>]
+    type BlackOrWhite =
+        | Black
+        | White
+
     (* credit: https://fx.sauder.ubc.ca/julian.html *)
 
     let julianCount y m d =
@@ -51,7 +56,7 @@ module Maya =
     | 1 kin    | None     |       1 |
     | 1 uinal  | 20 kin   |      20 |
     | 1 tun    | 18 uinal |     360 |
-    | 1 katun  | 20 tun   |   7,200 |
+    | 1 katun  | 20 tun   |   7,200 |(*  *)
     | 1 baktun | 20 katun | 140,000 |
     +----------+----------+---------+
 
@@ -124,10 +129,19 @@ module Maya =
             julia - EPOCH_JDAYS
             |> int
 
-        let rec mayaDigis value digits =
-            match struct (value / RADIX, value % RADIX) with
-            | (q, r) when q = 0 -> r :: digits
-            | (q, r) -> mayaDigis q <| r ::digits
+        let padding amt = Array.create amt 0 |> List.ofSeq
+
+
+        let rec mayaDigis blackOrWhite value digits =
+            match struct (value / RADIX, value % RADIX, blackOrWhite, List.length digits) with
+            | (0, r, Black, len) when len < 2 ->
+                padding (2 - len) @ r :: digits 
+            | (0, r, White, len) when len < 1 ->
+                padding (1 - len) @ r :: digits 
+            | (q, r, _, _) when q = 0 ->
+                r :: digits
+            | (q, r, _, _) ->
+                mayaDigis blackOrWhite q <| r ::digits
 
 
     (*
@@ -148,16 +162,12 @@ module Maya =
             daysSinceConstruct % WHEEL_TURN_RADIX
 
         let struct (black, white) =
-            [turnsOfTheWheel; daysRemaining]
-            |> List.map (function | i -> mayaDigis i [])
+            [struct(turnsOfTheWheel, Black); struct(daysRemaining, White)]
+            |> List.map (function | (i, blackOrWhite) -> mayaDigis blackOrWhite i [])
             |> function | [black; white]-> (black, white)
                         | _ -> discoPanic<struct (int list * int list)> "cease warning"
 
-        match struct (black, white) with
-(*         | ([_], [_]) -> black @ [0; 0; 0] @ white
-        | ([_],  _ ) -> 0 :: black @ white
-        | ( _ , [_]) -> black @ 0 :: white *)
-        |   _        -> black @ white
+        black @ white
 
 
 let argv = Environment.GetCommandLineArgs() 
@@ -173,13 +183,13 @@ let struct (y, m, d) =
         let now = DateTimeOffset.Now
         now.Year, now.Month, now.Day
 
-(* 
+
 Maya.print <| Maya.date 2012 12 21
-Maya.print <| Maya.date -3113 11 23
- *)
-(* for i in -3113..2023 do
+Maya.print <| Maya.date -3114 9 6
+ 
+for i in -3113..2023 do
     Maya.print <| Maya.date i 12 21
-    Threading.Thread.Sleep(33) *)
+    Threading.Thread.Sleep(33)
 
 
 
