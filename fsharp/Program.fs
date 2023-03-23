@@ -186,12 +186,6 @@ let struct (y, m, d) =
 
 Maya.print <| Maya.date 2012 12 21
 Maya.print <| Maya.date -3114 9 6
- 
-for i in -3113..2023 do
-    Maya.print <| Maya.date i 12 21
-    Threading.Thread.Sleep(33)
-
-
 
 Maya.print <| Maya.date y m d
 
