@@ -90,19 +90,19 @@ module Maya =
 
     let longDate y m d =
         
-        let referenceDate = ZERO
         let date = julianCount y m d
 
         let totalDays = 
-            (date - referenceDate)
+            (date - ZERO)
             |> int
 
-        let rec mayaDigis (days: int) (place: int) (acc: int list) =
-            let power = float place
+        let rec mayaDigis (days: int) (index: int) (acc: int list) =
+            let index = index - 1
+            let power = float index
 
             let unitOfDays = 
-                match place with
-                | place when place >= 2 ->
+                match index with
+                | index when index >= 2 ->
                     18.0 * 20.0 ** (power - 1.0)
                 | _ ->
                     20.0 ** power
@@ -111,16 +111,16 @@ module Maya =
             let struct (daysRemaining, value) =
                 (days % unitOfDays, days / unitOfDays)
             
-            if place = 0 then
+            if index = 0 then
                 value :: acc
                 |> List.rev
             else 
                 mayaDigis
                 <| daysRemaining
-                <| (place - 1)
-                <| (value :: acc)
+                <| index
+                <| value :: acc
 
-        let placesNeeded = 4
+        let placesNeeded = 5
         mayaDigis totalDays placesNeeded []
 
 
@@ -138,9 +138,9 @@ let struct (y, m, d) =
         now.Month,
         now.Day
 
-printfn "%A" <| Maya.longDate -3114 9 6
-printfn "%A" <| Maya.longDate 2012 12 21
-printfn "%A" <| Maya.longDate y m d
+Maya.print <| Maya.longDate -3114 9 6
+Maya.print <| Maya.longDate 2012 12 21
+Maya.print <| Maya.longDate y m d
 
 
 exit 0
