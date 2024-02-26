@@ -12,21 +12,17 @@ starting date of the Maya creation, August 11, 3114 BCE.
 (September 9, 3114 BCE Julian Calendar) 
 *)
 
-
 open System
 
-module Maya =
-
-    [<Struct>]
-    type BlackOrWhite =
-        | Black
-        | White
+module Maya =        
 
     (* credit: https://fx.sauder.ubc.ca/julian.html *)
 
-    let julianCount y m d =
-        let y = if y < 0 then y + 1 else y
-        let struct (y, m, d) = float y, float m, float d
+    let julianCount y m d=
+        let y =
+            if y < 0 then y + 1 else y
+        let struct (y, m, d) =
+            float y, float m, float d
 
         let struct (jy, jm) =
             if m > 2 then
@@ -47,52 +43,6 @@ module Maya =
                 
         jd1 - 0.5
 
-    (*
-    https://en.wikipedia.org/wiki/Positional_notation
-
-    +----------+----------+---------+
-    |   Head   |   Tail   |  Days   |
-    +----------+----------+---------+
-    | 1 kin    | None     |       1 |
-    | 1 uinal  | 20 kin   |      20 |
-    | 1 tun    | 18 uinal |     360 |
-    | 1 katun  | 20 tun   |   7,200 |(*  *)
-    | 1 baktun | 20 katun | 140,000 |
-    +----------+----------+---------+
-
-    Thus the Maya developed a modified base 20 system in which a date is represented by a
-    number written (in modern Indo-Arabic notation) as: 
-
-    a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
-
-    where the third place value is not 20**2 but 18*20. After the third place, each higher place
-    is 20 times the previous place value. So the system breaks only in the third place.
-
-    https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
-
-
-    *)
-
-    (*
-    type MayaTimeCycle =
-        | Kin   
-        | Uinal 
-        | Tun   
-        | Katun
-        | Baktun
-    with
-        member cycle.DayLength =
-            match cycle with                 
-            | Kin    ->        20.0 0 (* 1 *)
-            | Uinal  ->        20.0 1 (* 20 *)
-            | Tun    -> 18.0 * 20.0 1 (* 360 *)
-            | Katun  -> 18.0 * 20.0 2 (* 7,200 *)
-            | Baktun -> 18.0 * 20.0 3 (* 144,000 *)
-            |> int
-    *)
-
-    let discoPanic<'a> msg = invalidOp<'a> msg
-
     let print (date: int list) =
         if List.length date <= 13 then
             let fmt = sprintf "%02i"
@@ -111,82 +61,86 @@ module Maya =
 
     https://www.sizes.com/time/cal_mayan.htm
     *)
-
-    let private EPOCH_JDAYS = 584282.5
-    (*
-    The Babylonian numeral system, base 60, was the first positional system to be 
-    developed, and its influence is present today in the way time and angles are counted in 
-    tallies related to 60, such as 60 minutes in an hour and 360 degrees in a circle.
-    *)
-    let private WHEEL_TURN_RADIX = 360
-    
-    let private RADIX = 20
-
-    let date y m d = 
-        
-        let julia = julianCount y m d
-        let daysSinceConstruct = 
-            julia - EPOCH_JDAYS
-            |> int
-
-        let padding amt = Array.create amt 0 |> List.ofSeq
+    let private ZERO = julianCount -3114 9 6
 
 
-        let rec mayaDigis blackOrWhite value digits =
-            match struct (value / RADIX, value % RADIX, blackOrWhite, List.length digits) with
-            | (0, r, Black, len) when len < 2 ->
-                padding (2 - len) @ r :: digits 
-            | (0, r, White, len) when len < 1 ->
-                padding (1 - len) @ r :: digits 
-            | (q, r, _, _) when q = 0 ->
-                r :: digits
-            | (q, r, _, _) ->
-                mayaDigis blackOrWhite q <| r ::digits
+(*
+    https://en.wikipedia.org/wiki/Positional_notation
 
+    +----------+----------+---------+
+    |   Head   |   Tail   |  Days   |
+    +----------+----------+---------+
+    | 1 kin    | None     |       1 |
+    | 1 uinal  | 20 kin   |      20 |
+    | 1 tun    | 18 uinal |     360 |
+    | 1 katun  | 20 tun   |   7,200 |(*  *)
+    | 1 baktun | 20 katun | 144,000 |
+    +----------+----------+---------+
 
-    (*
+    Thus the Maya developed a modified base 20 system in which a date is represented by a
+    number written (in modern Indo-Arabic notation) as: 
+
     a.b.c.d.e = a(18*20**3) + b(18*20**2) + c(18*20**1) + d(20**1) + e(20**0)
 
-    where the third place value is not 20**2 but 18*20. After the third place, each higher 
-    place is 20 times the previous place value. So the system breaks only in the third place.
+    where the third place value is not 20**2 but 18*20. After the third place, each higher place
+    is 20 times the previous place value. So the system breaks only in the third place.
 
-    begin from the center;
-    clever mayans 
+    https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
+*)
 
-    REMINDER: More cleverness to deconstruct. Baktuns are limited by the value 13. With 12 wheel
-    slices and a center point, to form 13.
-    *)
+    let longDate y m d =
+        
+        let referenceDate = ZERO
+        let date = julianCount y m d
 
-        let struct (turnsOfTheWheel,daysRemaining) =
-            daysSinceConstruct / WHEEL_TURN_RADIX,
-            daysSinceConstruct % WHEEL_TURN_RADIX
+        let totalDays = 
+            (date - referenceDate)
+            |> int
 
-        let struct (black, white) =
-            [struct(turnsOfTheWheel, Black); struct(daysRemaining, White)]
-            |> List.map (function | (i, blackOrWhite) -> mayaDigis blackOrWhite i [])
-            |> function | [black; white]-> (black, white)
-                        | _ -> discoPanic<struct (int list * int list)> "cease warning"
+        let rec mayaDigis (days: int) (place: int) (acc: int list) =
+            let power = float place
 
-        black @ white
+            let unitOfDays = 
+                match place with
+                | place when place >= 2 ->
+                    18.0 * 20.0 ** (power - 1.0)
+                | _ ->
+                    20.0 ** power
+                |> int
+        
+            let struct (daysRemaining, value) =
+                (days % unitOfDays, days / unitOfDays)
+            
+            if place = 0 then
+                value :: acc
+                |> List.rev
+            else 
+                mayaDigis
+                <| daysRemaining
+                <| (place - 1)
+                <| (value :: acc)
+
+        let placesNeeded = 4
+        mayaDigis totalDays placesNeeded []
 
 
+            
 let argv = Environment.GetCommandLineArgs() 
 
 let struct (y, m, d) =
     if 4 = argv.Length then
-        struct (
-            int argv[1],
-            int argv[2],
-            int argv[3]
-        )
+        int argv[1],
+        int argv[2],
+        int argv[3]
     else
         let now = DateTimeOffset.Now
-        now.Year, now.Month, now.Day
+        now.Year,
+        now.Month,
+        now.Day
 
+printfn "%A" <| Maya.longDate -3114 9 6
+printfn "%A" <| Maya.longDate 2012 12 21
+printfn "%A" <| Maya.longDate y m d
 
-Maya.print <| Maya.date 2012 12 21
-Maya.print <| Maya.date -3114 9 6
-
-Maya.print <| Maya.date y m d
 
 exit 0
