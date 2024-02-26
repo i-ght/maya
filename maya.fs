@@ -1,24 +1,10 @@
-﻿(*
-Credit due: 
-- https://maya.nmai.si.edu/sites/all/themes/mayatime/js/calendar-converter/calendar-converter-en.js?rpyhor
-- https://maya.nmai.si.edu/calendar/maya-calendar-converter
-- https://maya.nmai.si.edu/resources
-- https://www.sizes.com/time/cal_mayan.htm
-- http://www.madore.org/~david/misc/calendar.html
-- https://www.fourmilab.ch/documents/calendar/ 
-- https://irp-cdn.multiscreensite.com/7b1aa4fb/files/uploaded/Thirteen%20Baktun%20Final.pdf ~ Thirteen Baktun: A Recalculation of the Calender End and the Length of the World Age by Loren W. Jeffries ©2018
-The Long Count calendar keeps track of the days that have passed since the mythical
-starting date of the Maya creation, August 11, 3114 BCE.
-(September 9, 3114 BCE Julian Calendar) 
-*)
-
-open System
+namespace Maya
 
 module Maya =        
 
     (* credit: https://fx.sauder.ubc.ca/julian.html *)
 
-    let julianCount y m d=
+    let jd y m d=
         let y =
             if y < 0 then y + 1 else y
         let struct (y, m, d) =
@@ -47,7 +33,7 @@ module Maya =
         if List.length date <= 13 then
             let fmt = sprintf "%02i"
             let formatted = List.map fmt date
-            let joined = String.Join('.', formatted)
+            let joined = String.concat"." formatted
             printfn "%s" joined
             
     (*
@@ -61,7 +47,8 @@ module Maya =
 
     https://www.sizes.com/time/cal_mayan.htm
     *)
-    let private ZERO = julianCount -3114 9 6
+    let [<Literal>] private EpochJd = 584282.5 
+        (*julian -3114 9 6*)
 
 
 (*
@@ -73,7 +60,7 @@ module Maya =
     | 1 kin    | None     |       1 |
     | 1 uinal  | 20 kin   |      20 |
     | 1 tun    | 18 uinal |     360 |
-    | 1 katun  | 20 tun   |   7,200 |(*  *)
+    | 1 katun  | 20 tun   |   7,200 |
     | 1 baktun | 20 katun | 144,000 |
     +----------+----------+---------+
 
@@ -90,22 +77,22 @@ module Maya =
 
     let longDate y m d =
         
-        let date = julianCount y m d
+        let jd = jd y m d
 
         let totalDays = 
-            (date - ZERO)
+            (jd - EpochJd)
             |> int
 
         let rec mayaDigis (days: int) (index: int) (acc: int list) =
             let index = index - 1
-            let power = float index
+            let fIndex = float index
 
             let unitOfDays = 
                 match index with
                 | index when index >= 2 ->
-                    18.0 * 20.0 ** (power - 1.0)
+                    18.0 * 20.0 ** (fIndex - 1.0)
                 | _ ->
-                    20.0 ** power
+                    20.0 ** fIndex
                 |> int
         
             let struct (daysRemaining, value) =
@@ -123,24 +110,3 @@ module Maya =
         let placesNeeded = 5
         mayaDigis totalDays placesNeeded []
 
-
-            
-let argv = Environment.GetCommandLineArgs() 
-
-let struct (y, m, d) =
-    if 4 = argv.Length then
-        int argv[1],
-        int argv[2],
-        int argv[3]
-    else
-        let now = DateTimeOffset.Now
-        now.Year,
-        now.Month,
-        now.Day
-
-Maya.print <| Maya.longDate -3114 9 6
-Maya.print <| Maya.longDate 2012 12 21
-Maya.print <| Maya.longDate y m d
-
-
-exit 0
