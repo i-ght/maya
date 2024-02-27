@@ -2,9 +2,6 @@ namespace Maya
 
 open System
 
-type RoundDate =
-    { Tzolkin: struct (TzolkinNumber * TzolkinName) }
-
 module Maya =        
 
     let print (date: int list) =
@@ -57,14 +54,14 @@ module Maya =
     https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
 *)
 
-    let longDays y m d =
+    let compute y m d =
         let jd = jd y m d
         jd - EpochJd
         |> int
 
-    let longDate y m d =
+    let computeDate y m d =
     
-        let totalDays = longDays y m d
+        let totalDays = compute y m d
 
         let rec mayaDigis days index acc =
             let index = index - 1
@@ -96,21 +93,12 @@ module Maya =
         let placesNeeded = 5
         mayaDigis totalDays placesNeeded []
 
-    let longOfDateTime (date: DateTimeOffset) =
-        longDate date.Year date.Month date.Year
-
-    let tzolkin y m d =
-        let days = longDays y m d
-        (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
-        let number = (days + 4) % 13
-        (* Ajaw = 19 *)
-        let name = (days + 19) % 20
-        struct (number, name)
-        
+    let ofDateTime (date: DateTimeOffset) =
+        computeDate date.Year date.Month date.Year
 
     let haab y m d =
         let days =
-            longDays y m d 
+            compute y m d 
             |> float
 
         let dayOfHaab = (days - 17.0) % 365.0

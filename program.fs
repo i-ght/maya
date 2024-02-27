@@ -24,17 +24,21 @@ let struct (y, m, d) =
         int argv[2],
         int argv[3]
     else
-        let now = DateTimeOffset.Now
-        now.Year,
-        now.Month,
-        now.Day
+        let (date, _time, _offset) =
+            DateTimeOffset.Now.Deconstruct()
+        date.Year,
+        date.Month,
+        date.Day
 
 
 Maya.print
-<| Maya.longDate y m d
+<| Maya.computeDate y m d
 
-Maya.tzolkin y m d
-|> printfn "%A"
+let struct (number, day) =
+    Tzolkin.compute y m d
+printfn "%i, %A" number day
+printfn "%s" day.Meaning
+printfn "%s" day.DetailedMeaning
 
 Maya.haab y m d
 |> printfn "%A"
