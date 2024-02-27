@@ -1,33 +1,11 @@
 namespace Maya
 
+open System
+
+type RoundDate =
+    { Tzolkin: struct (TzolkinNumber * TzolkinName) }
+
 module Maya =        
-
-    (* credit: https://fx.sauder.ubc.ca/julian.html *)
-
-    let jd y m d=
-        let y =
-            if y < 0 then y + 1 else y
-        let struct (y, m, d) =
-            float y, float m, float d
-
-        let struct (jy, jm) =
-            if m > 2 then
-                (y, m + 1.0)
-            else
-                (y - 1.0, m + 13.0)
-        
-        (* why these numbers? what do they mean? 
-        i don't know, i just copy and pasted them *)
-        let jd0 = (floor(365.25*jy)+floor(30.6001*jm)+d+1720995.0)
-
-        let jd1 =
-            if (d+31.0*(m+12.0*y) >= (15.0+31.0*(10.0+12.0*1582.0))) then
-                let ja = floor(0.01*jy)
-                jd0 + 2.0-ja+floor(0.25*ja)
-            else
-                jd0
-                
-        jd1 - 0.5
 
     let print (date: int list) =
         if List.length date <= 13 then
@@ -35,7 +13,7 @@ module Maya =
             let formatted = List.map fmt date
             let joined = String.concat"." formatted
             printfn "%s" joined
-            
+
     (*
     Using astronomical events recorded both by Mayan and European astronomers, and historical
     events whose dates were recorded both by Spaniards and civilizations using the Mayan
@@ -47,9 +25,13 @@ module Maya =
 
     https://www.sizes.com/time/cal_mayan.htm
     *)
-    let [<Literal>] private EpochJd = 584282.5 
-        (*julian -3114 9 6*)
 
+    (* 13.0.0.0.0 4 Ajaw, 8 Kumk’u 
+       -3113 BCE September 9th *)
+    let private EpochJd =
+        584282.5 
+        (* jd 2012 12 21 
+           4 Ajaw, 3 K'ank'in*)
 
 (*
     https://en.wikipedia.org/wiki/Positional_notation
@@ -75,15 +57,16 @@ module Maya =
     https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
 *)
 
-    let longDate y m d =
-        
+    let longDays y m d =
         let jd = jd y m d
+        jd - EpochJd
+        |> int
 
-        let totalDays = 
-            (jd - EpochJd)
-            |> int
+    let longDate y m d =
+    
+        let totalDays = longDays y m d
 
-        let rec mayaDigis (days: int) (index: int) (acc: int list) =
+        let rec mayaDigis days index acc =
             let index = index - 1
             let fIndex = float index
 
@@ -98,15 +81,39 @@ module Maya =
             let struct (daysRemaining, value) =
                 (days % unitOfDays, days / unitOfDays)
             
-            if index = 0 then
+            let acc =
                 value :: acc
+            
+            if index = 0 then
+                acc
                 |> List.rev
             else 
                 mayaDigis
                 <| daysRemaining
                 <| index
-                <| value :: acc
+                <| acc
 
         let placesNeeded = 5
         mayaDigis totalDays placesNeeded []
 
+    let longOfDateTime (date: DateTimeOffset) =
+        longDate date.Year date.Month date.Year
+
+    let tzolkin y m d =
+        let days = longDays y m d
+        (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
+        let number = (days + 4) % 13
+        (* Ajaw = 19 *)
+        let name = (days + 19) % 20
+        struct (number, name)
+        
+
+    let haab y m d =
+        let days =
+            longDays y m d 
+            |> float
+
+        let dayOfHaab = (days - 17.0) % 365.0
+        let day = dayOfHaab % 20.0 |> round
+        let month = round (floor (dayOfHaab/20.0))
+        struct (int day, int month)

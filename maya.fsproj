@@ -5,6 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="std.fs" />
+    <Compile Include="convenience.fs" />
+    <Compile Include="tzolkin.fs" />
     <Compile Include="maya.fs" />
     <Compile Include="program.fs" />
   </ItemGroup>

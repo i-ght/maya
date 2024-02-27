@@ -32,4 +32,11 @@ let struct (y, m, d) =
 
 Maya.print
 <| Maya.longDate y m d
+
+Maya.tzolkin y m d
+|> printfn "%A"
+
+Maya.haab y m d
+|> printfn "%A"
+
 exit 0
