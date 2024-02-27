@@ -12,6 +12,7 @@ starting date of the Maya creation, August 11, 3114 BCE.
 (September 9, 3114 BCE Julian Calendar) 
 *)
 
+
 open System
 open Maya
 
@@ -33,10 +34,6 @@ let struct (y, m, d) =
         date.Year,
         date.Month,
         date.Day
-
-
-Tzolkin.compute 2012 12 21
-|> printfn "%A"
 
 LongCount.print
 <| LongCount.compute y m d
