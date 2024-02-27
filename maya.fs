@@ -9,7 +9,8 @@ type MayaEpochChoice =
 
 module Maya =
 
-    let private chosenEpoch = BC3114
+    let internal chosenEpoch =
+        BC3114
 
     let print (date: int list) =
         if List.length date <= 13 then
