@@ -32,6 +32,7 @@ type TzolkinDayName =
 module Tzolkin =
 
     let ofNumber n = n |> function
+        | 00 -> Ajaw
         | 01 -> Imix
         | 02 -> Ik
         | 03 -> Akbal
@@ -127,6 +128,7 @@ module Tzolkin =
         let n = (days + 4) % 13
         (* Ajaw = 19 *)
         let name = (days + (number Ajaw )) % 20
+
         struct (n, ofNumber name)
 
     let ofDateTime (dateTime: DateTimeOffset) =

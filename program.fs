@@ -31,6 +31,9 @@ let struct (y, m, d) =
         date.Day
 
 
+Tzolkin.compute 2012 12 21
+|> printfn "%A"
+
 Long.print
 <| Long.compute y m d
 
