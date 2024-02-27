@@ -123,7 +123,7 @@ module Tzolkin =
         | Kawak -> 19
         | Ajaw -> 20
 
-    let compute (y) (m) (d): TzolkinDate =
+    let compute y m d : TzolkinDate =
         let days = LongCount.computeDays y m d
         (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
         let n = (days + 4) % 13

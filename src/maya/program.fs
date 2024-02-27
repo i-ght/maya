@@ -38,14 +38,20 @@ let struct (y, m, d) =
 LongCount.print
 <| LongCount.compute y m d
 
-let struct (number, dayName) =
+let struct (tzolkNum, tzolkDay) =
     Tzolkin.compute y m d
-printfn "%i, %A" number dayName
-printfn "%s" dayName.Meaning
-printfn "%s" dayName.DetailedMeaning
+printfn "%i, %A" tzolkNum tzolkDay
 
-let struct (dayNumber, month) =
+let struct (haabNum, haabMonth) =
     Haab.compute y m d
-printfn "%i, %A" dayNumber month
+
+printfn "%i, %A" haabNum haabMonth
+
+printfn "%s" tzolkDay.Meaning
+printfn "%s" tzolkDay.DetailedMeaning
+
+printfn ""
+
+printfn "%s" haabMonth.Meaning
 
 exit 0

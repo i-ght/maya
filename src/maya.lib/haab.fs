@@ -25,6 +25,8 @@ type HaabMonth =
     | Kumku
     | Wayeb
 
+type HaabDate = (struct (HaabDay * HaabMonth))
+
 module Haab =
 
     let ofNumber n = n |> function
@@ -91,7 +93,7 @@ module Haab =
         | Kumku -> "granary"
         | Wayeb -> ""
 
-    let compute y m d =
+    let compute y m d : HaabDate =
         let days =
             LongCount.computeDays y m d 
             |> float
