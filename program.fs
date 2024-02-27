@@ -32,15 +32,16 @@ let struct (y, m, d) =
 
 
 Maya.print
-<| Maya.computeDate y m d
+<| Maya.compute y m d
 
-let struct (number, day) =
+let struct (number, dayName) =
     Tzolkin.compute y m d
-printfn "%i, %A" number day
-printfn "%s" day.Meaning
-printfn "%s" day.DetailedMeaning
+printfn "%i, %A" number dayName
+printfn "%s" dayName.Meaning
+printfn "%s" dayName.DetailedMeaning
 
-Maya.haab y m d
-|> printfn "%A"
+let struct (dayNumber, month) =
+    Haab.compute y m d
+printfn "%i, %A" dayNumber month
 
 exit 0

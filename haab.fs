@@ -1,6 +1,7 @@
 namespace Maya
 
-type HaabNumber = int
+(*0-19*)
+type HaabDay = int
 
 [<Struct>]
 type HaabMonth =
@@ -25,6 +26,27 @@ type HaabMonth =
 
 module Haab =
 
+    let ofNumber n = n |> function
+        | 1 -> Pop
+        | 2 -> Wo
+        | 3 -> Sip
+        | 4 -> Sotz
+        | 5 -> Sek
+        | 6 -> Xul
+        | 7 -> Yaxkin
+        | 8 -> Mol
+        | 9 -> Chen
+        | 10 -> Yax
+        | 11 -> Sak
+        | 12 -> Keh
+        | 13 -> Mak
+        | 14 -> Kankin
+        | 15 -> Muwan
+        | 16 -> Pax
+        | 17 -> Kayab
+        | 18 -> Kumku
+        | _ -> invalidArg "n" "n must be between 1-19"
+        
     let number month = month |>  function
         | Pop -> 1
         | Wo -> 2
@@ -64,6 +86,16 @@ module Haab =
         | Pax -> "planting time"
         | Kayab -> "turtle"
         | Kumku -> "granary"
+
+    let compute y m d =
+        let days =
+            Maya.computeDays y m d 
+            |> float
+
+        let dayOfHaab = (days - 17.0) % 365.0
+        let day = dayOfHaab % 20.0 |> round
+        let month = round (floor (dayOfHaab/20.0))
+        struct (int day, ofNumber <| int (month + 1.0))
 
 
 type HaabMonth with

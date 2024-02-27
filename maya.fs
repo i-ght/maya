@@ -54,14 +54,14 @@ module Maya =
     https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
 *)
 
-    let compute y m d =
+    let computeDays y m d =
         let jd = jd y m d
         jd - EpochJd
         |> int
 
-    let computeDate y m d =
+    let compute y m d =
     
-        let totalDays = compute y m d
+        let totalDays = computeDays y m d
 
         let rec mayaDigis days index acc =
             let index = index - 1
@@ -94,14 +94,4 @@ module Maya =
         mayaDigis totalDays placesNeeded []
 
     let ofDateTime (date: DateTimeOffset) =
-        computeDate date.Year date.Month date.Year
-
-    let haab y m d =
-        let days =
-            compute y m d 
-            |> float
-
-        let dayOfHaab = (days - 17.0) % 365.0
-        let day = dayOfHaab % 20.0 |> round
-        let month = round (floor (dayOfHaab/20.0))
-        struct (int day, int month)
+        compute date.Year date.Month date.Year

@@ -3,6 +3,7 @@ namespace Maya
 open System
 
 
+(* 1-13 *)
 type TzolkinNumber = int
 
 [<Struct>]
@@ -124,7 +125,7 @@ module Tzolkin =
         | Ajaw -> 20
 
     let compute y m d =
-        let days = Maya.compute y m d
+        let days = Maya.computeDays y m d
         (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
         let n = (days + 4) % 13
         (* Ajaw = 19 *)
@@ -134,7 +135,10 @@ module Tzolkin =
     let ofDateTime (dateTime: DateTimeOffset) =
         let (date, _time, _offset) =
             dateTime.Deconstruct()
-        compute date.Year date.Month date.Day
+        compute
+        <| date.Year
+        <| date.Month
+        <| date.Day
 
 type TzolkinDayName with
     member day.Number = Tzolkin.number day
