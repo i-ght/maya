@@ -2,9 +2,8 @@ namespace Maya
 
 open System
 
-
 (* 1-13 *)
-type TzolkinNumber = int
+type TzolkinNumber = Int32
 
 [<Struct>]
 type TzolkinDayName =
@@ -28,6 +27,8 @@ type TzolkinDayName =
     | Etznab
     | Kawak
     | Ajaw
+
+type TzolkinDate = (struct (TzolkinNumber * TzolkinDayName))
 
 module Tzolkin =
 
@@ -122,13 +123,12 @@ module Tzolkin =
         | Kawak -> 19
         | Ajaw -> 20
 
-    let compute y m d =
-        let days = Long.computeDays y m d
+    let compute (y) (m) (d): TzolkinDate =
+        let days = LongCount.computeDays y m d
         (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
         let n = (days + 4) % 13
         (* Ajaw = 19 *)
         let name = (days + (number Ajaw )) % 20
-
         struct (n, ofNumber name)
 
     let ofDateTime (dateTime: DateTimeOffset) =

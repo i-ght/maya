@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ybRZSVnNkqQW9rkXMPlOcb/FJOJByYrBWGya7bD5SpHJtMgx8qDdYniBP2ItKOwSRVzv247x1+MkguqfRXj0Ew==",
+  "success": true,
+  "projectFilePath": "/home/coyote/Code/maya/src/maya.lib/maya.lib.fsproj",
+  "expectedPackageFiles": [
+    "/home/coyote/.nuget/packages/fsharp.core/8.0.101/fsharp.core.8.0.101.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -14,8 +14,12 @@ starting date of the Maya creation, August 11, 3114 BCE.
 
 open System
 open Maya
-open std
+
+module Env =
+    let argv () =
+        Environment.GetCommandLineArgs()
             
+
 let argv = Env.argv ()
 
 let struct (y, m, d) =
@@ -34,8 +38,8 @@ let struct (y, m, d) =
 Tzolkin.compute 2012 12 21
 |> printfn "%A"
 
-Long.print
-<| Long.compute y m d
+LongCount.print
+<| LongCount.compute y m d
 
 let struct (number, dayName) =
     Tzolkin.compute y m d

@@ -7,7 +7,7 @@ type MayaEpochChoice =
     | BC3114
     | CE2012
 
-module Long =
+module LongCount =
 
     let internal chosenEpoch =
         BC3114

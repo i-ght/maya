@@ -1,0 +1,13 @@
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/maya.lib.fsproj.AssemblyReference.cache
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/maya.lib.AssemblyInfoInputs.cache
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/maya.lib.AssemblyInfo.fs
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/maya.lib.fsproj.CoreCompileInputs.cache
+/home/coyote/Code/maya/src/maya.lib/bin/Debug/net8.0/maya.lib.deps.json
+/home/coyote/Code/maya/src/maya.lib/bin/Debug/net8.0/maya.lib.dll
+/home/coyote/Code/maya/src/maya.lib/bin/Debug/net8.0/maya.lib.pdb
+/home/coyote/Code/maya/src/maya.lib/bin/Debug/net8.0/maya.lib.xml
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/maya.lib.dll
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/refint/maya.lib.dll
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/maya.lib.xml
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/maya.lib.pdb
+/home/coyote/Code/maya/src/maya.lib/obj/Debug/net8.0/ref/maya.lib.dll
