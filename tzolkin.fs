@@ -29,9 +29,6 @@ type TzolkinDayName =
     | Kawak
     | Ajaw
 
-type RoundDate =
-    { Tzolkin: struct (TzolkinNumber * TzolkinDayName) }
-
 module Tzolkin =
 
     let ofNumber n = n |> function
@@ -125,7 +122,7 @@ module Tzolkin =
         | Ajaw -> 20
 
     let compute y m d =
-        let days = Maya.computeDays y m d
+        let days = Long.computeDays y m d
         (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
         let n = (days + 4) % 13
         (* Ajaw = 19 *)

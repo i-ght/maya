@@ -31,8 +31,8 @@ let struct (y, m, d) =
         date.Day
 
 
-Maya.print
-<| Maya.compute y m d
+Long.print
+<| Long.compute y m d
 
 let struct (number, dayName) =
     Tzolkin.compute y m d

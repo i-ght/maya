@@ -93,7 +93,7 @@ module Haab =
 
     let compute y m d =
         let days =
-            Maya.computeDays y m d 
+            Long.computeDays y m d 
             |> float
         (* subtract one from the call to number because 0 counts as a day *)
         let dayOfHaab = (days - (float <| (* 17.0 *) number Kumku - 1)) % 365.0

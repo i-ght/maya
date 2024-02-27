@@ -6,9 +6,10 @@
   <ItemGroup>
     <Compile Include="std.fs" />
     <Compile Include="convenience.fs" />
-    <Compile Include="maya.fs" />
+    <Compile Include="long.fs" />
     <Compile Include="haab.fs" />
     <Compile Include="tzolkin.fs" />
+    <Compile Include="maya.fs" />
     <Compile Include="program.fs" />
   </ItemGroup>
 </Project>
