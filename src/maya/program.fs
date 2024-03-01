@@ -14,7 +14,7 @@ starting date of the Maya creation, August 11, 3114 BCE.
 
 
 open System
-open Maya.
+open Maya
 
 module Env = let argv () = Environment.GetCommandLineArgs()
             
