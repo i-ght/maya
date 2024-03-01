@@ -30,15 +30,15 @@ type HaabDate = (struct (HaabDay * HaabMonth))
 module Haab =
 
     let ofNumber n = n |> function
-        | 1 -> Pop
-        | 2 -> Wo
-        | 3 -> Sip
-        | 4 -> Sotz
-        | 5 -> Sek
-        | 6 -> Xul
-        | 7 -> Yaxkin
-        | 8 -> Mol
-        | 9 -> Chen
+        | 01 -> Pop
+        | 02 -> Wo
+        | 03 -> Sip
+        | 04 -> Sotz
+        | 05 -> Sek
+        | 06 -> Xul
+        | 07 -> Yaxkin
+        | 08 -> Mol
+        | 09 -> Chen
         | 10 -> Yax
         | 11 -> Sak
         | 12 -> Keh

@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="program.fs" />
+    <Compile Include="maya.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\maya.lib\maya.lib.fsproj" />

@@ -16,15 +16,13 @@ starting date of the Maya creation, August 11, 3114 BCE.
 open System
 open Maya
 
-module Env =
-    let argv () =
-        Environment.GetCommandLineArgs()
+module Env = let argv () = Environment.GetCommandLineArgs()
             
 
 let argv = Env.argv ()
 
 let struct (y, m, d) =
-    if 4 = argv.Length then
+    if 4 = Array.length argv then
         int argv[1],
         int argv[2],
         int argv[3]
@@ -35,16 +33,16 @@ let struct (y, m, d) =
         date.Month,
         date.Day
 
-LongCount.print
-<| LongCount.compute y m d
+LongCount.compute y m d
+|> LongCount.print
 
 let struct (tzolkNum, tzolkDay) =
     Tzolkin.compute y m d
-let struct (haabNum, haabMonth) =
+let struct (haabDay, haabMonth) =
     Haab.compute y m d
 
 printfn "%i, %A" tzolkNum tzolkDay
-printfn "%i, %A" haabNum haabMonth
+printfn "%i, %A" haabDay haabMonth
 printfn "%s" tzolkDay.Meaning
 printfn "%s" tzolkDay.DetailedMeaning
 printfn "%s" haabMonth.Meaning
