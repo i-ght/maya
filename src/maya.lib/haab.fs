@@ -107,7 +107,7 @@ module Haab =
             match struct (LongCount.epoch, date) with
             | (CE2012, [a; _; _; _; _]) when a > -13 ->
                 (number Kankin - 1) * 20 + 3
-            | (BC3114, [a;_;_;_;_]) when a >= 13 ->
+            | (BC3114, [a; _; _; _; _]) when a >= 13 ->
                 (number Kankin - 1) * 20 + 3
             | _ ->
                 (number Kumku - 1) * 20 + 8
