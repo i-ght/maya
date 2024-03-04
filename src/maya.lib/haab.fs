@@ -99,7 +99,7 @@ module Haab =
             |> float
 
         let daysUntilNewYear =
-            match LongCount.chosenEpoch with
+            match LongCount.epoch with
             | BC3114 ->
                 if days < 17 then
                     days - 348.0
@@ -110,6 +110,9 @@ module Haab =
                     days - 263.0
                 else
                     102.0
+
+        let l =
+            LongCount.epoch
 
         let dayOfHaab = (days - daysUntilNewYear) % 365.0
     

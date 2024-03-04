@@ -40,7 +40,7 @@ for i in 0..1 do
     for (y, m, d) in [(2012, 12, 21); (y, m, d)] do
 
         if i = 1 then
-            LongCount.chosenEpoch <- CE2012
+            LongCount.epoch <- CE2012
 
         LongCount.compute y m d
         |> LongCount.print
