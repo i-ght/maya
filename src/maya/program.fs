@@ -36,28 +36,26 @@ let struct (y, m, d, date) =
         date.Day,
         date
 
-let dates = 
-    Array.create 1 date
-    |> Array.mapi (
-        fun i elem ->
-            elem.AddDays(i) 
-    )
+for i in 0..1 do
+    for (y, m, d) in [(2012, 12, 21); (y, m, d)] do
 
-for date in dates do
+        if i = 1 then
+            LongCount.chosenEpoch <- CE2012
 
-    LongCount.ofDate date
-    |> LongCount.print
+        LongCount.compute y m d
+        |> LongCount.print
 
-    let struct (tzolkNum, tzolkDay) =
-        Tzolkin.ofDate date
+        let struct (tzolkNum, tzolkDay) =
+            Tzolkin.compute y m d
 
-    let struct (haabDay, haabMonth) =
-        Haab.ofDate date
+        let struct (haabDay, haabMonth) =
+            Haab.compute y m d
 
-    printfn "%i, %A" tzolkNum tzolkDay
-    printfn "%i, %A" haabDay haabMonth
-    printfn "%s" tzolkDay.Meaning
-    printfn "%s" tzolkDay.DetailedMeaning
-    printfn "%s" haabMonth.Meaning
+        printfn "%i, %A" tzolkNum tzolkDay
+        printfn "%i, %A" haabDay haabMonth
+        printfn "%s" tzolkDay.Meaning
+        printfn "%s" tzolkDay.DetailedMeaning
+        
+        printfn "[*]========="
 
 exit 0

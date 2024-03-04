@@ -97,11 +97,27 @@ module Haab =
         let days =
             LongCount.days y m d
             |> float
-        (* subtract one from the call to number because 0 counts as a day *)
-        let dayOfHaab = (days - (float <| (* 17.0 *) number Kumku - 1)) % 365.0
+
+        let daysUntilNewYear =
+            match LongCount.chosenEpoch with
+            | BC3114 ->
+                if days < 17 then
+                    days - 348.0
+                else
+                    17.0
+            | CE2012 ->
+                if days < 102 then
+                    days - 263.0
+                else
+                    102.0
+
+        let dayOfHaab = (days - daysUntilNewYear) % 365.0
+    
         let day = dayOfHaab % 20.0 |> round
-        let month = round (floor (dayOfHaab/20.0)) + 1.0
-        struct (int day, ofNumber <| int month)
+        let month = 
+            round (floor (dayOfHaab/20.0)) + 1.0
+        let m = ofNumber <| int month
+        struct (int day, m)
 
     let ofDate (date: System.DateOnly): HaabDate =
         let (y, m, d) = date.Deconstruct()

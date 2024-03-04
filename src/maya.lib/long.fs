@@ -9,7 +9,7 @@ type MayaEpochChoice =
 
 module LongCount =
 
-    let internal chosenEpoch =
+    let mutable chosenEpoch =
         BC3114
 
     let print (date: int list) =
@@ -33,7 +33,7 @@ module LongCount =
 
     (* 
         *)
-    let private EpochJd =
+    let private epochJd () =
         match chosenEpoch with
         | BC3114 -> 584282.5  (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
         | CE2012 -> jd 2012 12 21 (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
@@ -64,7 +64,7 @@ module LongCount =
 
     let days y m d =
         let jd = jd y m d
-        jd - EpochJd
+        jd - epochJd ()
         |> int
 
     let compute y m d =

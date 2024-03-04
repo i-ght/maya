@@ -16,4 +16,4 @@ module Maya =
         Tzolkin.ofDate date
 
     let haab date =
-        Haab.compute date
+        Haab.ofDate date
