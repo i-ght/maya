@@ -95,15 +95,19 @@ module Haab =
 
     let compute y m d : HaabDate =
 
-        let days2012 =
-            LongCount.days 2012 12 21
-
+        let date =
+            LongCount.compute y m d
         let days =
-            LongCount.days y m d
+            date[2] * 360
+            + date[3] * 20
+            + date[4]
+        let days =
+            days
             |> function
-            | days when days <= days2012 -> days + (number Kumku - 1) * 20 + 8
             | days -> days + (number Kankin - 1) * 20 + 3
-
+            (* | days when days <= days2012 -> days + (number Kankin - 1) * 20 + 3
+            | days -> days + (number Kumku - 1) * 20 + 8
+ *)
         (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
         (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 

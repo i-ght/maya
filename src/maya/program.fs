@@ -36,24 +36,27 @@ let struct (y, m, d, date) =
         date.Day,
         date
 
-
-for (y, m, d) in [(999, 9, 6); (2012, 12, 21); (y, m, d)] do
-
-
-    LongCount.compute y m d
-    |> LongCount.print
-
-    let struct (tzolkNum, tzolkDay) =
-        Tzolkin.compute y m d
-
-    let struct (haabDay, haabMonth) =
-        Haab.compute y m d
-
-    printfn "%i, %A" tzolkNum tzolkDay
-    printfn "%i, %A" haabDay haabMonth
-    printfn "%s" tzolkDay.Meaning
-    printfn "%s" tzolkDay.DetailedMeaning
+for i in 0..1 do
+    if i = 1 then
+        LongCount.epoch <- CE2012
     
-    printfn "[*]========="
+    for (y, m, d) in [(2012, 12, 21); (y, m, d)] do
+
+
+        LongCount.compute y m d
+        |> LongCount.print
+
+        let struct (tzolkNum, tzolkDay) =
+            Tzolkin.compute y m d
+
+        let struct (haabDay, haabMonth) =
+            Haab.compute y m d
+
+        printfn "%i, %A" tzolkNum tzolkDay
+        printfn "%i, %A" haabDay haabMonth
+        printfn "%s" tzolkDay.Meaning
+        printfn "%s" tzolkDay.DetailedMeaning
+        
+        printfn "[*]========="
 
 exit 0
