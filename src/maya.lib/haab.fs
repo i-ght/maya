@@ -94,33 +94,28 @@ module Haab =
         | Wayeb -> ""
 
     let compute y m d : HaabDate =
+
+        let days2012 =
+            LongCount.days 2012 12 21
+
         let days =
             LongCount.days y m d
-            |> float
+            |> function
+            | days when days <= days2012 -> days + (number Kumku - 1) * 20 + 8
+            | days -> days + (number Kankin - 1) * 20 + 3
 
-        let daysUntilNewYear =
-            match LongCount.epoch with
-            | BC3114 ->
-                if days < 17 then
-                    days - 348.0
-                else
-                    17.0
-            | CE2012 ->
-                if days < 102 then
-                    days - 263.0
-                else
-                    102.0
+        (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
+        (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 
-        let l =
-            LongCount.epoch
+        let dayOfHaab = days % 365
 
-        let dayOfHaab = (days - daysUntilNewYear) % 365.0
-    
-        let day = dayOfHaab % 20.0 |> round
+        let day =
+            dayOfHaab % 20
+            |> int
         let month = 
-            round (floor (dayOfHaab/20.0)) + 1.0
-        let m = ofNumber <| int month
-        struct (int day, m)
+            (dayOfHaab/20) + 1
+            |> ofNumber
+        struct (day, month)
 
     let ofDate (date: System.DateOnly): HaabDate =
         let (y, m, d) = date.Deconstruct()

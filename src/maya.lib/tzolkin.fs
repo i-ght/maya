@@ -124,20 +124,27 @@ module Tzolkin =
         | Ajaw -> 20
 
     let compute y m d: TzolkinDate =
-        let days = 
-            LongCount.days y m d
-        (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
+        let date = LongCount.compute y m d
+        
+        let dz = 
+            date[2] * 360
+            + date[3] * 20
+            + date[4]
+        
+        (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
+        (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
+
         let n = 
-            (days + 4) % 13
-            |> function 
+            (dz + 4) % 13
+            |> function
             | 0 -> 13 
             | n -> n
-        (* Ajaw = 19 *)
-        let name = (days + number Ajaw) % 20
-        struct (
-            n,
-            ofNumber name
-        )
+
+        let name =
+            (dz + number Ajaw) % 20 
+            |> ofNumber
+        struct (n, name)
+
 
     let ofDate (date: DateOnly): TzolkinDate =
         let (y, m, d) = date.Deconstruct()
