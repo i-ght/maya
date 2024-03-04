@@ -3,7 +3,7 @@ namespace Maya
 open System
 
 [<Struct>]
-type MayaEpochChoice =
+type MayaEpoch =
     | BC3114
     | CE2012
 

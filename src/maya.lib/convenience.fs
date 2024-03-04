@@ -18,9 +18,7 @@ module internal Convenience =
                 (y, m + 1.0)
             else
                 (y - 1.0, m + 13.0)
-        
-        (* why these numbers? what do they mean? 
-        i don't know, i just copy and pasted them *)
+
         let jd0 = (floor(365.25*jy)+floor(30.6001*jm)+d+1720995.0)
 
         let jd1 =
