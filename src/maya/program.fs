@@ -21,30 +21,43 @@ module Env = let argv () = Environment.GetCommandLineArgs()
 
 let argv = Env.argv ()
 
-let struct (y, m, d) =
+let struct (y, m, d, date) =
     if 4 = Array.length argv then
         int argv[1],
         int argv[2],
-        int argv[3]
+        int argv[3],
+        DateOnly(int argv[1], int argv[2], int argv[3])
     else
         let (date, _time, _offset) =
             DateTimeOffset.Now.Deconstruct()
+        
         date.Year,
         date.Month,
-        date.Day
+        date.Day,
+        date
 
-LongCount.compute y m d
-|> LongCount.print
+let dates = 
+    Array.create 1 date
+    |> Array.mapi (
+        fun i elem ->
+            elem.AddDays(i) 
+    )
 
-let struct (tzolkNum, tzolkDay) =
-    Tzolkin.compute y m d
-let struct (haabDay, haabMonth) =
-    Haab.compute y m d
+for date in dates do
 
-printfn "%i, %A" tzolkNum tzolkDay
-printfn "%i, %A" haabDay haabMonth
-printfn "%s" tzolkDay.Meaning
-printfn "%s" tzolkDay.DetailedMeaning
-printfn "%s" haabMonth.Meaning
+    LongCount.ofDate date
+    |> LongCount.print
+
+    let struct (tzolkNum, tzolkDay) =
+        Tzolkin.ofDate date
+
+    let struct (haabDay, haabMonth) =
+        Haab.ofDate date
+
+    printfn "%i, %A" tzolkNum tzolkDay
+    printfn "%i, %A" haabDay haabMonth
+    printfn "%s" tzolkDay.Meaning
+    printfn "%s" tzolkDay.DetailedMeaning
+    printfn "%s" haabMonth.Meaning
 
 exit 0

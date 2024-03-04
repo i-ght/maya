@@ -62,14 +62,14 @@ module LongCount =
     https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
 *)
 
-    let computeDays y m d =
+    let days y m d =
         let jd = jd y m d
         jd - EpochJd
         |> int
 
     let compute y m d =
     
-        let totalDays = computeDays y m d
+        let totalDays = days y m d
 
         let rec mayaDigis days index acc =
             let index = index - 1
@@ -101,5 +101,16 @@ module LongCount =
         let placesNeeded = 5
         mayaDigis totalDays placesNeeded []
 
-    let ofDateTime (date: DateTimeOffset) =
-        compute date.Year date.Month date.Year
+
+    let ofDate (date: DateOnly) =
+        let (y, m, d) = date.Deconstruct()
+        compute y m d
+    
+    let daysOfDate (date: DateOnly) =
+        let (y, m, d) = date.Deconstruct()
+        days y m d
+
+    let daysOfDateTime (date: DateTimeOffset) =
+        let (date, _time, _offset) =
+            date.Deconstruct()
+        daysOfDate date

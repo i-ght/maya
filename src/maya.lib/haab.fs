@@ -95,13 +95,17 @@ module Haab =
 
     let compute y m d : HaabDate =
         let days =
-            LongCount.computeDays y m d 
+            LongCount.days y m d
             |> float
         (* subtract one from the call to number because 0 counts as a day *)
         let dayOfHaab = (days - (float <| (* 17.0 *) number Kumku - 1)) % 365.0
         let day = dayOfHaab % 20.0 |> round
         let month = round (floor (dayOfHaab/20.0)) + 1.0
         struct (int day, ofNumber <| int month)
+
+    let ofDate (date: System.DateOnly): HaabDate =
+        let (y, m, d) = date.Deconstruct()
+        compute y m d
 
 
 type HaabMonth with

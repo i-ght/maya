@@ -1,11 +1,13 @@
 namespace Maya
 
+open System
+
 [<AutoOpen>]
 module internal Convenience =
 
     (* credit: https://fx.sauder.ubc.ca/julian.html *)
 
-    let jd y m d=
+    let jd y m d =
         let y =
             if y < 0 then y + 1 else y
         let struct (y, m, d) =
