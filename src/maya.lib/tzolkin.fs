@@ -3,7 +3,7 @@ namespace Maya
 open System
 
 (* 1-13 *)
-type TzolkinNumber = Int32
+type TzolkinNumber = int
 
 [<Struct>]
 type TzolkinDayName =
@@ -127,6 +127,7 @@ module Tzolkin =
         let days = LongCount.computeDays y m d
         (* start date: 13.0.0.0.0 4 Ajaw,. 4 days*)
         let n = (days + 4) % 13
+        let n = if n = 0 then 13 else n
         (* Ajaw = 19 *)
         let name = (days + (number Ajaw )) % 20
         struct (n, ofNumber name)
