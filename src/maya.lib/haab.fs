@@ -95,19 +95,25 @@ module Haab =
 
     let compute y m d : HaabDate =
 
-        let date =
-            LongCount.compute y m d
+        let date = LongCount.compute y m d
         let days =
-            date[2] * 360
-            + date[3] * 20
+            date[2] 
+            * 360
+            + date[3] 
+            * 20
             + date[4]
-        let days =
-            days
-            |> function
-            | days -> days + (number Kankin - 1) * 20 + 3
-            (* | days when days <= days2012 -> days + (number Kankin - 1) * 20 + 3
-            | days -> days + (number Kumku - 1) * 20 + 8
- *)
+    
+        let offset =
+            match struct (LongCount.epoch, date) with
+            | (CE2012, [a; _; _; _; _]) when a > -13 ->
+                (number Kankin - 1) * 20 + 3
+            | (BC3114, [a;_;_;_;_]) when a >= 13 ->
+                (number Kankin - 1) * 20 + 3
+            | _ ->
+                (number Kumku - 1) * 20 + 8
+
+        let days = days + offset
+
         (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
         (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 

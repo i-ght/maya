@@ -40,7 +40,7 @@ for i in 0..1 do
     if i = 1 then
         LongCount.epoch <- CE2012
     
-    for (y, m, d) in [(2012, 12, 21); (y, m, d)] do
+    for (y, m, d) in [(-3114, 9, 6); (2012, 12, 21); (y, m, d)] do
 
 
         LongCount.compute y m d
