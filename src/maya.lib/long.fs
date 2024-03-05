@@ -24,64 +24,6 @@ module LongDate =
     let epoch longDate =
         longDate.Epoch
 
-    let private dayz (digits: int list) =
-        let lastI = 
-            List.length digits - 1 
-            |> float
-
-        let sum =
-            List.mapi (fun i elem ->
-                let elem = float elem
-
-                let power = lastI - float i
-
-                let power =
-                    match i with
-                    | i when i <= 2 ->
-                        power - 1.0
-                    | _ -> 
-                        power
-                
-                let acc =
-                    match i with
-                    | i when i <= 2 ->
-                        elem * (18.0 * 20.0 ** power)
-                    | _ ->
-                        elem * (20.0 ** power)
-                acc
-                |> int
-
-            ) digits
-            |> List.sum
-        sum
-
-    let mutable Epoch = BC3114
-
-    let print (date: LongDate) =
-        if List.length date.Digits <= 13 then
-            let fmt = sprintf "%02i"
-            let formatted = List.map fmt date.Digits
-            let joined = String.concat"." formatted
-            printfn "%s" joined
-
-    (*
-    Using astronomical events recorded both by Mayan and European astronomers, and historical
-    events whose dates were recorded both by Spaniards and civilizations using the Mayan
-    calendar, scholars have sought to correlate the Mayan and Gregorian calendars. According to
-    the most widely accepted correlation (the “Goodman-Martinez-Thompson Correlation”) the
-    current Mayan epoch began on Wednesday 11 August 3113 bce (Gregorian) (September 6, 3114 BCE
-    Julian Calendar https://www.timeanddate.com/calendar/mayan.html) which is Julian date
-    584,282.5.
-
-    https://www.sizes.com/time/cal_mayan.htm
-    *)
-
-    (* 
-        *)
-    let private epochJd () =
-        match Epoch with
-        | BC3114 -> 584282.5  (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
-        | CE2012 -> jd 2012 12 21 (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 
 (*
     https://en.wikipedia.org/wiki/Positional_notation
@@ -106,6 +48,57 @@ module LongDate =
 
     https://www.maa.org/press/periodicals/convergence/when-a-number-system-loses-uniqueness-the-case-of-the-maya-the-mayan-number-system
 *)
+
+
+    let private daysSum (digits: int list) =
+        let lastI = 
+            List.length digits - 1 
+            |> float
+
+        let sum =
+            List.mapi (fun i elem ->
+                let elem = float elem
+                let power = lastI - float i
+                
+                let acc =
+                    match i with
+                    | i when i <= 2 ->
+                        elem * (18.0 * 20.0 ** (power - 1.0))
+                    | _ ->
+                        elem * (20.0 ** power)
+                acc |> int
+
+            ) digits
+            |> List.sum
+        sum
+
+    let mutable Epoch = BC3114
+
+    let print (date: LongDate) =
+        if List.length <| digits date <= 13 then
+            let fmt = sprintf "%02i"
+            let formatted = List.map fmt date.Digits
+            let joined = String.concat"." formatted
+            printfn "%s" joined
+
+    (*
+    Using astronomical events recorded both by Mayan and European astronomers, and historical
+    events whose dates were recorded both by Spaniards and civilizations using the Mayan
+    calendar, scholars have sought to correlate the Mayan and Gregorian calendars. According to
+    the most widely accepted correlation (the “Goodman-Martinez-Thompson Correlation”) the
+    current Mayan epoch began on Wednesday 11 August 3113 bce (Gregorian) (September 6, 3114 BCE
+    Julian Calendar https://www.timeanddate.com/calendar/mayan.html) which is Julian date
+    584,282.5.
+
+    https://www.sizes.com/time/cal_mayan.htm
+    *)
+
+    (* 
+        *)
+    let private epochJd () =
+        match Epoch with
+        | BC3114 -> 584282.5  (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
+        | CE2012 -> jd 2012 12 21 (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 
     let days y m d =
         let jd = jd y m d
@@ -151,7 +144,7 @@ module LongDate =
         { Digits=digis
           Date=(y, m, d) 
           Epoch=epoch
-          DaysSinceEpoch=dayz digis }
+          DaysSinceEpoch=daysSum digis }
 
 
     let ofDateOnly (date: DateOnly) =
