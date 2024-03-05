@@ -123,14 +123,9 @@ module Tzolkin =
         | Kawak -> 19
         | Ajaw -> 20
 
-    let compute (date: int list): TzolkinDate =
+    let construct (date: LongDate): TzolkinDate =
 
-        let dz = 
-              date[0] * 144000
-            + date[1] * 7200
-            + date[2] * 360
-            + date[3] * 20
-            + date[4]
+        let dz = LongDate.daysSinceEpoch date
             
         (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
         (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
@@ -144,11 +139,12 @@ module Tzolkin =
         let name =
             (dz + number Ajaw) % 20 
             |> ofNumber
+
         struct (n, name)
 
     let ofDate y m d =
-        let date = LongCount.ofDate y m d
-        compute date
+        let date = LongDate.construct y m d
+        construct date
 
     let ofDateOnly (date: DateOnly): TzolkinDate =
         let (y, m, d) = date.Deconstruct()
@@ -163,5 +159,5 @@ type TzolkinDayName with
     member day.Number = Tzolkin.number day
     member day.Meaning = Tzolkin.meaning day
     member day.DetailedMeaning = Tzolkin.detailedMeaning day
-    static member Compute date = Tzolkin.ofDate date
+    static member OfDate date = Tzolkin.ofDate date
     static member OfDateTime dateTime = Tzolkin.ofDateTime dateTime

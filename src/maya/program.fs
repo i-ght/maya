@@ -38,26 +38,14 @@ let struct (y, m, d, date) =
 
 for i in 0..1 do
     if i = 1 then
-        LongCount.epoch <- CE2012
-    
-    for (y, m, d) in [(-3114, 9, 6); (2012, 12, 21); (y, m, d); (4000, 4, 24)] do
+        LongDate.Epoch <- CE2012
 
-
-        let date = LongCount.ofDate y m d
-        date
-        |> LongCount.print 
-
-        let struct (tzolkNum, tzolkDay) =
-            Tzolkin.compute date
-
-        let struct (haabDay, haabMonth) =
-            Haab.compute date
-
-        printfn "%i, %A" tzolkNum tzolkDay
-        printfn "%i, %A" haabDay haabMonth
-        printfn "%s" tzolkDay.Meaning
-        printfn "%s" tzolkDay.DetailedMeaning
+    for (y, m, d) in [(-3114, 9, 6); (2012, 12, 21); (y, m, d)] do
         
+        let roundDate =
+            Maya.round y m d
+
+        printfn "%A" roundDate
         printfn "[*]========="
 
 exit 0

@@ -93,27 +93,21 @@ module Haab =
         | Kumku -> "granary"
         | Wayeb -> ""
 
-    let compute (date: int list) : HaabDate =
+    let construct (date: LongDate): HaabDate =
 
-        (* let date = LongCount.ofDate y m d *)
-        let days =
-              date[0] * 144000
-            + date[1] * 7200
-            + date[2] * 360
-            + date[3] * 20
-            + date[4]
+        let days = LongDate.daysSinceEpoch date
     
         (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
         (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 
         let head =
-            match LongCount.epoch with
+            match LongDate.Epoch with
             | BC3114 ->    
-                -(8 + ((number Kumku - 1) * 20))
+                (8 + ((number Kumku - 1) * 20))
             | CE2012 ->
-                -((3 + ((number Kankin - 1) * 20)))
+                ((3 + ((number Kankin - 1) * 20)))
 
-        let dayOfHaab = (days - head) % 365
+        let dayOfHaab = (days + head) % 365
 
         let day =
             dayOfHaab % 20
@@ -125,8 +119,8 @@ module Haab =
         struct (day, month)
  
     let ofDate y m d =
-        let date = LongCount.ofDate y m d
-        compute date
+        let date = LongDate.construct y m d
+        construct date
 
     let ofDateOnly (date: System.DateOnly): HaabDate =
         let (y, m, d) = date.Deconstruct()

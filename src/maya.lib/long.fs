@@ -7,15 +7,60 @@ type MayaEpoch =
     | BC3114
     | CE2012
 
-module LongCount =
+type LongDate =
+    { Digits: int list 
+      Date: struct (int * int * int)
+      DaysSinceEpoch: int
+      Epoch: MayaEpoch }
 
-    let mutable epoch =
-        BC3114
+module LongDate =
 
-    let print (date: int list) =
-        if List.length date <= 13 then
+    let daysSinceEpoch longDate =
+        longDate.DaysSinceEpoch 
+
+    let digits longDate =
+        longDate.Digits
+
+    let epoch longDate =
+        longDate.Epoch
+
+    let dayCount (digits: int list) =
+        let lastI = 
+            List.length digits - 1 
+            |> float
+
+        let sum =
+            List.mapi (fun i elem ->
+                let elem = float elem
+
+                let power = lastI - float i
+
+                let power =
+                    match i with
+                    | i when i <= 2 ->
+                        power - 1.0
+                    | _ -> 
+                        power
+                
+                let acc =
+                    match i with
+                    | i when i <= 2 ->
+                        elem * (18.0 * 20.0 ** power)
+                    | _ ->
+                        elem * (20.0 ** power)
+                acc
+                |> int
+
+            ) digits
+            |> List.sum
+        sum
+
+    let mutable Epoch = BC3114
+
+    let print (date: LongDate) =
+        if List.length date.Digits <= 13 then
             let fmt = sprintf "%02i"
-            let formatted = List.map fmt date
+            let formatted = List.map fmt date.Digits
             let joined = String.concat"." formatted
             printfn "%s" joined
 
@@ -34,7 +79,7 @@ module LongCount =
     (* 
         *)
     let private epochJd () =
-        match epoch with
+        match Epoch with
         | BC3114 -> 584282.5  (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
         | CE2012 -> jd 2012 12 21 (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 
@@ -67,7 +112,7 @@ module LongCount =
         jd - epochJd ()
         |> int
 
-    let ofDate y m d =
+    let construct y m d : LongDate =
     
         let totalDays = days y m d
 
@@ -99,12 +144,18 @@ module LongCount =
                 <| acc
 
         let placesNeeded = 5
-        mayaDigis totalDays placesNeeded []
+        let digis =
+            mayaDigis totalDays placesNeeded []
+
+        { Digits=digis
+          Date=(y, m, d) 
+          Epoch=Epoch
+          DaysSinceEpoch=dayCount digis }
 
 
     let ofDateOnly (date: DateOnly) =
         let (y, m, d) = date.Deconstruct()
-        ofDate y m d
+        construct y m d
     
     let daysOfDate (date: DateOnly) =
         let (y, m, d) = date.Deconstruct()
