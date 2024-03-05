@@ -40,17 +40,18 @@ for i in 0..1 do
     if i = 1 then
         LongCount.epoch <- CE2012
     
-    for (y, m, d) in [(-3114, 9, 6); (2012, 12, 21); (y, m, d)] do
+    for (y, m, d) in [(-3114, 9, 6); (2012, 12, 21); (y, m, d); (4000, 4, 24)] do
 
 
-        LongCount.compute y m d
-        |> LongCount.print
+        let date = LongCount.ofDate y m d
+        date
+        |> LongCount.print 
 
         let struct (tzolkNum, tzolkDay) =
-            Tzolkin.compute y m d
+            Tzolkin.compute date
 
         let struct (haabDay, haabMonth) =
-            Haab.compute y m d
+            Haab.compute date
 
         printfn "%i, %A" tzolkNum tzolkDay
         printfn "%i, %A" haabDay haabMonth

@@ -67,7 +67,7 @@ module LongCount =
         jd - epochJd ()
         |> int
 
-    let compute y m d =
+    let ofDate y m d =
     
         let totalDays = days y m d
 
@@ -102,9 +102,9 @@ module LongCount =
         mayaDigis totalDays placesNeeded []
 
 
-    let ofDate (date: DateOnly) =
+    let ofDateOnly (date: DateOnly) =
         let (y, m, d) = date.Deconstruct()
-        compute y m d
+        ofDate y m d
     
     let daysOfDate (date: DateOnly) =
         let (y, m, d) = date.Deconstruct()

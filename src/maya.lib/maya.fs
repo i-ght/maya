@@ -7,7 +7,7 @@ type RoundDate =
 module Maya =
 
     let longDate date =
-        LongCount.compute date
+        LongCount.ofDate date
 
     let longDays date =
         LongCount.days date

@@ -93,31 +93,27 @@ module Haab =
         | Kumku -> "granary"
         | Wayeb -> ""
 
-    let compute y m d : HaabDate =
+    let compute (date: int list) : HaabDate =
 
-        let date = LongCount.compute y m d
+        (* let date = LongCount.ofDate y m d *)
         let days =
-            date[2] 
-            * 360
-            + date[3] 
-            * 20
+              date[0] * 144000
+            + date[1] * 7200
+            + date[2] * 360
+            + date[3] * 20
             + date[4]
     
-        let offset =
-            match struct (LongCount.epoch, date) with
-            | (CE2012, [a; _; _; _; _]) when a > -13 ->
-                (number Kankin - 1) * 20 + 3
-            | (BC3114, [a; _; _; _; _]) when a >= 13 ->
-                (number Kankin - 1) * 20 + 3
-            | _ ->
-                (number Kumku - 1) * 20 + 8
-
-        let days = days + offset
-
         (*-3113 BCE September 9th, 13.0.0.0.0 4 Ajaw, 8 Kumk’u *)
         (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 
-        let dayOfHaab = days % 365
+        let head =
+            match LongCount.epoch with
+            | BC3114 ->    
+                -(8 + ((number Kumku - 1) * 20))
+            | CE2012 ->
+                -((3 + ((number Kankin - 1) * 20)))
+
+        let dayOfHaab = (days - head) % 365
 
         let day =
             dayOfHaab % 20
@@ -125,12 +121,18 @@ module Haab =
         let month = 
             (dayOfHaab/20) + 1
             |> ofNumber
+
         struct (day, month)
+ 
+    let ofDate y m d =
+        let date = LongCount.ofDate y m d
+        compute date
 
-    let ofDate (date: System.DateOnly): HaabDate =
+    let ofDateOnly (date: System.DateOnly): HaabDate =
         let (y, m, d) = date.Deconstruct()
-        compute y m d
+        ofDate y m d
 
+    
 
 type HaabMonth with
         member month.Meaning = Haab.meaning month

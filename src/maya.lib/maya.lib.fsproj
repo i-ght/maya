@@ -8,8 +8,8 @@
   <ItemGroup>
     <Compile Include="convenience.fs" />
     <Compile Include="long.fs" />
-    <Compile Include="haab.fs" />
     <Compile Include="tzolkin.fs" />
+    <Compile Include="haab.fs" />
     <Compile Include="maya.fs" />
   </ItemGroup>
 

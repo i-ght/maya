@@ -123,11 +123,12 @@ module Tzolkin =
         | Kawak -> 19
         | Ajaw -> 20
 
-    let compute y m d: TzolkinDate =
-        let date = LongCount.compute y m d
-        
+    let compute (date: int list): TzolkinDate =
+
         let dz = 
-            date[2] * 360
+              date[0] * 144000
+            + date[1] * 7200
+            + date[2] * 360
             + date[3] * 20
             + date[4]
             
@@ -145,15 +146,18 @@ module Tzolkin =
             |> ofNumber
         struct (n, name)
 
+    let ofDate y m d =
+        let date = LongCount.ofDate y m d
+        compute date
 
-    let ofDate (date: DateOnly): TzolkinDate =
+    let ofDateOnly (date: DateOnly): TzolkinDate =
         let (y, m, d) = date.Deconstruct()
-        compute y m d
+        ofDate y m d
 
     let ofDateTime (dateTime: DateTimeOffset) =
         let (date, _time, _offset) =
             dateTime.Deconstruct()
-        ofDate date
+        ofDateOnly date
 
 type TzolkinDayName with
     member day.Number = Tzolkin.number day
