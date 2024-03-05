@@ -24,7 +24,7 @@ module LongDate =
     let epoch longDate =
         longDate.Epoch
 
-    let dayCount (digits: int list) =
+    let private dayz (digits: int list) =
         let lastI = 
             List.length digits - 1 
             |> float
@@ -113,7 +113,8 @@ module LongDate =
         |> int
 
     let construct y m d : LongDate =
-    
+
+        let epoch = Epoch
         let totalDays = days y m d
 
         let rec mayaDigis days index acc =
@@ -149,8 +150,8 @@ module LongDate =
 
         { Digits=digis
           Date=(y, m, d) 
-          Epoch=Epoch
-          DaysSinceEpoch=dayCount digis }
+          Epoch=epoch
+          DaysSinceEpoch=dayz digis }
 
 
     let ofDateOnly (date: DateOnly) =

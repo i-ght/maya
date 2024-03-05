@@ -159,5 +159,5 @@ type TzolkinDayName with
     member day.Number = Tzolkin.number day
     member day.Meaning = Tzolkin.meaning day
     member day.DetailedMeaning = Tzolkin.detailedMeaning day
-    static member OfDate date = Tzolkin.ofDate date
+    static member OfDateOnly date = Tzolkin.ofDateOnly date
     static member OfDateTime dateTime = Tzolkin.ofDateTime dateTime
