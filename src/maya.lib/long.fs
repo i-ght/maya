@@ -75,7 +75,7 @@ module LongDate =
     let mutable Epoch = BC3114
 
     let print (date: LongDate) =
-        if List.length <| digits date <= 13 then
+        if List.length date.Digits <= 13 then
             let fmt = sprintf "%02i"
             let formatted = List.map fmt date.Digits
             let joined = String.concat"." formatted

@@ -19,10 +19,10 @@ open Maya
 module Env = let argv () = Environment.GetCommandLineArgs()
             
 
-let argv = Env.argv ()
+let argv = Env.argv () |> List.ofSeq
 
 let struct (y, m, d, date) =
-    if 4 = Array.length argv then
+    if 4 = List.length argv then
         int argv[1],
         int argv[2],
         int argv[3],
@@ -36,16 +36,19 @@ let struct (y, m, d, date) =
         date.Day,
         date
 
-for i in 0..1 do
-    if i = 1 then
-        LongDate.Epoch <- CE2012
+for (y, m, d) in [(y, m, d)] do
+    
+    let long = Maya.long y m d
+    let round = Maya.round long
 
-    for (y, m, d) in [(-3114, 9, 6); (2012, 12, 21); (y, m, d)] do
-        
-        let roundDate =
-            Maya.round y m d
+    printfn "%A" round
+    
+    let struct (a, moon) = round.Tzolkin
+    let struct (b, sun) = round.Haab
 
-        printfn "%A" roundDate
-        printfn "[*]========="
+    printfn "%s" moon.Meaning
+    printfn "%s" moon.DetailedMeaning
+    printfn "%s" sun.Meaning
+
 
 exit 0

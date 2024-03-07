@@ -101,7 +101,7 @@ module Haab =
         (* 2012 12 21 4 Ajaw, 3 K'ank'in*)
 
         let head =
-            match LongDate.Epoch with
+            match date.Epoch with
             | BC3114 ->    
                 (8 + ((number Kumku - 1) * 20))
             | CE2012 ->

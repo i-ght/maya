@@ -9,20 +9,18 @@ type RoundDate =
 
 module Maya =
 
-    let round y m d =
-        let long = LongDate.construct y m d
-        let tzolkin =
-            Tzolkin.construct long
-        let haab =
-            Haab.construct long
-        { Tzolkin=tzolkin; 
-          Haab=haab;
-          Long=long }
+    let long y m d =
+        LongDate.construct y m d
+
+    let round date =
+        { Tzolkin=Tzolkin.construct date
+          Haab=Haab.construct date
+          Long=date }
 
     let roundOfDate (date: DateOnly) =
         let (y, m, d) = date.Deconstruct()
-        round y m d
-
+        let long = LongDate.construct y m d
+        round long
 
     let days date =
         LongDate.daysOfDate date
