@@ -16,17 +16,19 @@ starting date of the Maya creation, August 11, 3114 BCE.
 open System
 open Maya
 
+open Tao.Lib
+
 module Env = let argv () = Environment.GetCommandLineArgs()
             
-
 let argv = Env.argv () |> List.ofSeq
 
 let struct (y, m, d, date) =
     if 4 = List.length argv then
-        int argv[1],
-        int argv[2],
-        int argv[3],
-        DateOnly(int argv[1], int argv[2], int argv[3])
+        let struct (a, b, c) =
+            int argv[1],
+            int argv[2],
+            int argv[3]
+        (a, b, c, DateOnly(a, b, c))
     else
         let (date, _time, _offset) =
             DateTimeOffset.Now.Deconstruct()
@@ -36,19 +38,42 @@ let struct (y, m, d, date) =
         date.Day,
         date
 
+let taoSlices = Tao.construct ()
+let r = Random()
+
+let spinTaoWheel () =
+    let index = r.Next(0, List.length taoSlices[0])
+    let lines = taoSlices[0][index]
+    struct (index + 1, lines)
+
 for (y, m, d) in [(y, m, d)] do
     
-    let long = Maya.long y m d
-    let round = Maya.round long
+    let long =
+        Maya.long y m d
+    let round =
+        Maya.round long
 
-    printfn "%A" round
+    printfn "%s"
+    <| Round.str round
     
-    let struct (a, moon) = round.Tzolkin
-    let struct (b, sun) = round.Haab
+
+    let struct (_, moon) = round.Tzolkin
+    let struct (_, sun) = round.Haab
 
     printfn "%s" moon.Meaning
     printfn "%s" moon.DetailedMeaning
     printfn "%s" sun.Meaning
+
+    let taoSlice = spinTaoWheel ()
+    let taoSlice = sprintf "%A" taoSlice
+    printfn "%s" (taoSlice.Replace("struct ", ""))
+
+
+
+
+
+
+
 
 
 exit 0

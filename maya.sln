@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{55CD2800-D071-4382-83C0-5A5E298D5E67}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "maya", "src\maya\maya.fsproj", "{88E93D5F-5434-43D4-A47A-56A790C48EDD}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "maya.lib", "src\maya.lib\maya.lib.fsproj", "{A3A79ED2-D28E-495C-ABF3-DC7ECAA436D3}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "maya", "src\maya\maya.fsproj", "{D192D772-A65C-4EA6-B974-9E1343A4FDCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,17 +18,17 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{88E93D5F-5434-43D4-A47A-56A790C48EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88E93D5F-5434-43D4-A47A-56A790C48EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88E93D5F-5434-43D4-A47A-56A790C48EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88E93D5F-5434-43D4-A47A-56A790C48EDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3A79ED2-D28E-495C-ABF3-DC7ECAA436D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A3A79ED2-D28E-495C-ABF3-DC7ECAA436D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3A79ED2-D28E-495C-ABF3-DC7ECAA436D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3A79ED2-D28E-495C-ABF3-DC7ECAA436D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D192D772-A65C-4EA6-B974-9E1343A4FDCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D192D772-A65C-4EA6-B974-9E1343A4FDCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D192D772-A65C-4EA6-B974-9E1343A4FDCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D192D772-A65C-4EA6-B974-9E1343A4FDCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{88E93D5F-5434-43D4-A47A-56A790C48EDD} = {55CD2800-D071-4382-83C0-5A5E298D5E67}
 		{A3A79ED2-D28E-495C-ABF3-DC7ECAA436D3} = {55CD2800-D071-4382-83C0-5A5E298D5E67}
+		{D192D772-A65C-4EA6-B974-9E1343A4FDCA} = {55CD2800-D071-4382-83C0-5A5E298D5E67}
 	EndGlobalSection
 EndGlobal
