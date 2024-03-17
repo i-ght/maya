@@ -12,7 +12,7 @@
 
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\maya.lib\maya.lib.fsproj" />
+    <ProjectReference Include="..\maya\maya.fsproj" />
     <ProjectReference Include="..\..\..\Tao\src\tao.lib\tao.lib.fsproj" />
   </ItemGroup>
 
