@@ -5,7 +5,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>maya</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-    <VersionPrefix>0</VersionPrefix>
+    <VersionPrefix>2024.03.17</VersionPrefix>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="program.fs" />
