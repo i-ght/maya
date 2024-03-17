@@ -5,6 +5,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>maya</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
+    <VersionPrefix>0</VersionPrefix>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="program.fs" />
@@ -14,4 +15,5 @@
     <ProjectReference Include="..\maya.lib\maya.lib.fsproj" />
     <ProjectReference Include="..\..\..\Tao\src\tao.lib\tao.lib.fsproj" />
   </ItemGroup>
+
 </Project>

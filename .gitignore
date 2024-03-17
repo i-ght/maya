@@ -1,6 +1,4 @@
 bin/
 obj/
 .vscode/
-.config/
-.fake
-rust/target
+nupkg/
