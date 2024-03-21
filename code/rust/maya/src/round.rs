@@ -1,12 +1,6 @@
-use crate::{haab::{self, HaabDate}, tzolkin::{self, TzolkinDate}, long::LongDate, MayaEpoch};
+use crate::{haab, tzolkin, LongDate, MayaEpoch, RoundDate};
 
 
-#[derive(Debug)]
-pub struct RoundDate {
-    pub tzolkin: TzolkinDate,
-    pub haab: HaabDate,
-    pub long: LongDate
-}
 
 impl RoundDate {
     pub fn construct(long: LongDate) -> RoundDate {

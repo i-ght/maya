@@ -1,33 +1,5 @@
-use crate::long::LongDate;
+use crate::{LongDate, TzolkinDate, TzolkinDayName};
 
-pub type TzolkinNumber = i64;
-
-#[derive(Debug)]
-pub enum TzolkinDayName {
-    Imix = 1,
-    Ik,
-    Akbal,
-    Kan,
-    Chikchan,
-    Kimi,
-    Manik,
-    Lamat,
-    Muluk,
-    Ok,
-    Chuwen,
-    Eb,
-    Ben,
-    Ix,
-    Men,
-    Kib,
-    Kaban,
-    Etznab,
-    Kawak,
-    Ajaw
-}
-
-
-pub type TzolkinDate = (TzolkinNumber, TzolkinDayName);
 
 impl TzolkinDayName {
 

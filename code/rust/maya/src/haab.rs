@@ -1,33 +1,6 @@
 use core::panic;
 
-use crate::long::LongDate;
-
-pub type HaabDay = i64;
-
-#[derive(Debug)]
-pub enum HaabMonth {
-    Pop,
-    Wo,
-    Sip,
-    Sotz,
-    Sek,
-    Xul,
-    Yaxkin,
-    Mol,
-    Chen,
-    Yax,
-    Sak,
-    Keh,
-    Mak,
-    Kankin,
-    Muwan,
-    Pax,
-    Kayab,
-    Kumku,
-    Wayeb
-}
-
-pub type HaabDate = (HaabDay, HaabMonth);
+use crate::{HaabDate, HaabMonth, LongDate};
 
 impl HaabMonth {
     pub fn of_number(n: i64) -> HaabMonth {
@@ -113,9 +86,9 @@ pub fn construct(date: &LongDate) -> HaabDate {
         crate::MayaEpoch::CE2012 =>
             3 + ((HaabMonth::Kankin.number() - 1) * 20)
     };
-    let dayOfHaab = (days + head) % 365;
-    let day = dayOfHaab % 20;
-    let month = (dayOfHaab/20) + 1;
-    let haabMonth = HaabMonth::of_number(month);
-    (day, haabMonth)
+    let day_of_haab = (days + head) % 365;
+    let day = day_of_haab % 20;
+    let month = (day_of_haab/20) + 1;
+    let haab_month = HaabMonth::of_number(month);
+    (day, haab_month)
 }

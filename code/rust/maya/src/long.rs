@@ -1,13 +1,4 @@
-use crate::{Date, Day, MayaEpoch, Month, Year};
-
-
-#[derive(Debug, Clone)]
-pub struct LongDate {
-    pub digits: Vec<i64>,
-    pub date: Date,
-    pub days_since_epoch: i64,
-    pub epoch: MayaEpoch
-}
+use crate::{Day, LongDate, MayaEpoch, Month, Year};
 
 fn jd(y: i32, m: i32, d: i32) -> f64 {
     let (y, m, d) = (f64::from(y), f64::from(m), f64::from(d));
