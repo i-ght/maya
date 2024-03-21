@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/maya/bin/Debug/net8.0/maya.dll",
+            "program": "${workspaceFolder}/src/maya.console/bin/Debug/net8.0/maya.console.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
