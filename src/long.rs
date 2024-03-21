@@ -51,7 +51,7 @@ fn maya_digis(days: i64, place_index: usize) -> Vec<i64> {
 
 
 impl LongDate {
-    pub fn construct(epoch: MayaEpoch, y: Year, m: Month, d: Day) -> LongDate {
+    pub fn new(epoch: MayaEpoch, y: Year, m: Month, d: Day) -> LongDate {
         let days = days_diff(&epoch, y, m, d);
         let places_needed = 5;
         let digis = maya_digis(days, places_needed);
@@ -61,14 +61,5 @@ impl LongDate {
             days_since_epoch: days,
             epoch
         }
-    }
-
-    pub fn of_ce(y: Year, m: Month, d: Day) -> LongDate {
-        LongDate::construct(
-            MayaEpoch::CE2012,
-            y,
-            m,
-            d
-        )
     }
 }

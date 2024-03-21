@@ -5,15 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
-            "type": "coreclr",
+            "type": "lldb",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/maya.console/bin/Debug/net8.0/maya.console.dll",
+            "name": "Debug",
+            "program": "${workspaceFolder}/target/debug/maya",
             "args": [],
-            "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
-            "console": "internalConsole"
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

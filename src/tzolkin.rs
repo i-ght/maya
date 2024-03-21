@@ -110,12 +110,12 @@ pub fn number(&self) -> i32 {
 pub fn construct(date: &LongDate) -> TzolkinDate {
     let days = date.days_since_epoch;
     let n = (days + 4) % 13;
-    let n = if n == 0 {13} else {n};
+    let thirteen = if n == 0 {13} else {n};
     
     let ajaw = TzolkinDayName::Ajaw.number() as i64;
 
     let name = 
         (days + ajaw) % 20;
     let tzolk = TzolkinDayName::of_number(name);
-    (n, tzolk)
+    (thirteen, tzolk)
 }

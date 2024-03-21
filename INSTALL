@@ -1,3 +1,0 @@
-dotnet tool uninstall -g maya.console
-dotnet pack src/maya.console
-dotnet tool install --global --add-source ./src/maya.console/nupkg maya.console
