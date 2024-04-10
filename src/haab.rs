@@ -1,6 +1,6 @@
 use core::panic;
 
-use crate::{HaabDate, HaabMonth, LongDate};
+use crate::{HaabDate, HaabMonth, LongDate, MayaEpoch};
 
 impl HaabMonth {
     pub fn of_number(n: i64) -> HaabMonth {
@@ -78,17 +78,17 @@ impl HaabMonth {
     }
 }
 
-pub fn construct(date: &LongDate) -> HaabDate {
+pub fn compute(date: &LongDate) -> HaabDate {
     let days = date.days_since_epoch;
     let head = match date.epoch {
-        crate::MayaEpoch::BC3114 =>
+        MayaEpoch::BC3114 =>
             8 + ((HaabMonth::Kumku.number()  - 1) * 20),
-        crate::MayaEpoch::CE2012 =>
+        MayaEpoch::CE2012 =>
             3 + ((HaabMonth::Kankin.number() - 1) * 20)
     };
     let day_of_haab = (days + head) % 365;
     let day = day_of_haab % 20;
     let month = (day_of_haab/20) + 1;
     let haab_month = HaabMonth::of_number(month);
-    (day, haab_month)
+    HaabDate(day, haab_month)
 }

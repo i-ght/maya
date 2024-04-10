@@ -1,63 +1,61 @@
 use crate::{LongDate, TzolkinDate, TzolkinDayName};
 
-
 impl TzolkinDayName {
-
-pub fn of_number(n: i64) -> TzolkinDayName {
-    let a = n % 20;
-    match a {
-        00 => TzolkinDayName::Ajaw,
-        01 => TzolkinDayName::Imix,
-        02 => TzolkinDayName::Ik,
-        03 => TzolkinDayName::Akbal,
-        04 => TzolkinDayName::Kan,
-        05 => TzolkinDayName::Chikchan,
-        06 => TzolkinDayName::Kimi,
-        07 => TzolkinDayName::Manik,
-        08 => TzolkinDayName::Lamat,
-        09 => TzolkinDayName::Muluk,
-        10 => TzolkinDayName::Ok,
-        11 => TzolkinDayName::Chuwen,
-        12 => TzolkinDayName::Eb,
-        13 => TzolkinDayName::Ben,
-        14 => TzolkinDayName::Ix,
-        15 => TzolkinDayName::Men,
-        16 => TzolkinDayName::Kib,
-        17 => TzolkinDayName::Kaban,
-        18 => TzolkinDayName::Etznab,
-        19 => TzolkinDayName::Kawak,
-        20 => TzolkinDayName::Ajaw,
-        _ => unreachable!()
+    pub fn of_number(n: i64) -> TzolkinDayName {
+        let a = n % 20;
+        match a {
+            00 => TzolkinDayName::Ajaw,
+            01 => TzolkinDayName::Imix,
+            02 => TzolkinDayName::Ik,
+            03 => TzolkinDayName::Akbal,
+            04 => TzolkinDayName::Kan,
+            05 => TzolkinDayName::Chikchan,
+            06 => TzolkinDayName::Kimi,
+            07 => TzolkinDayName::Manik,
+            08 => TzolkinDayName::Lamat,
+            09 => TzolkinDayName::Muluk,
+            10 => TzolkinDayName::Ok,
+            11 => TzolkinDayName::Chuwen,
+            12 => TzolkinDayName::Eb,
+            13 => TzolkinDayName::Ben,
+            14 => TzolkinDayName::Ix,
+            15 => TzolkinDayName::Men,
+            16 => TzolkinDayName::Kib,
+            17 => TzolkinDayName::Kaban,
+            18 => TzolkinDayName::Etznab,
+            19 => TzolkinDayName::Kawak,
+            20 => TzolkinDayName::Ajaw,
+            _ => unreachable!(),
+        }
     }
-}
-    
-pub fn meaning(&self) -> &'static str {
-    match self {
-        TzolkinDayName::Imix => "waterlily, crocodile",
-        TzolkinDayName::Ik => "wind, breath, life force",
-        TzolkinDayName::Akbal => "darkness, night, early dawn",
-        TzolkinDayName::Kan => "Net, sacrifice",
-        TzolkinDayName::Chikchan => "cosmological snake",
-        TzolkinDayName::Kimi => "death",
-        TzolkinDayName::Manik => "deer",
-        TzolkinDayName::Lamat => "Venus, star, ripe(ness), maize seeds",
-        TzolkinDayName::Muluk => "jade, water, offering",
-        TzolkinDayName::Ok => "dog",
-        TzolkinDayName::Chuwen => "howler monkey",
-        TzolkinDayName::Eb => "rain",
-        TzolkinDayName::Ben => "green/young maize, seed",
-        TzolkinDayName::Ix => "jaguar",
-        TzolkinDayName::Men => "eagle",
-        TzolkinDayName::Kib => "wax",
-        TzolkinDayName::Kaban => "earth",
-        TzolkinDayName::Etznab => "flint",
-        TzolkinDayName::Kawak => "rain storm",
-        TzolkinDayName::Ajaw => "lord, ruler, sun"
-    }
-}
 
-pub fn detailed_meaning(&self) -> &'static str {
-    match self {
+    pub fn meaning(&self) -> &'static str {
+        match self {
+            TzolkinDayName::Imix => "waterlily, crocodile",
+            TzolkinDayName::Ik => "wind, breath, life force",
+            TzolkinDayName::Akbal => "darkness, night, early dawn",
+            TzolkinDayName::Kan => "Net, sacrifice",
+            TzolkinDayName::Chikchan => "cosmological snake",
+            TzolkinDayName::Kimi => "death",
+            TzolkinDayName::Manik => "deer",
+            TzolkinDayName::Lamat => "Venus, star, ripe(ness), maize seeds",
+            TzolkinDayName::Muluk => "jade, water, offering",
+            TzolkinDayName::Ok => "dog",
+            TzolkinDayName::Chuwen => "howler monkey",
+            TzolkinDayName::Eb => "rain",
+            TzolkinDayName::Ben => "green/young maize, seed",
+            TzolkinDayName::Ix => "jaguar",
+            TzolkinDayName::Men => "eagle",
+            TzolkinDayName::Kib => "wax",
+            TzolkinDayName::Kaban => "earth",
+            TzolkinDayName::Etznab => "flint",
+            TzolkinDayName::Kawak => "rain storm",
+            TzolkinDayName::Ajaw => "lord, ruler, sun",
+        }
+    }
+
+    pub fn detailed_meaning(&self) -> &'static str {
+        match self {
         TzolkinDayName::Imix => "The etymology of IMOX comes from the word “sea,” “river,” and “lake.” It is the day to ask for a person's return after they have left their home or country. People ask for rain on this day, the nawal of the sea. Also, on this day people ask for the calming of mental and spiritual disorders, climate changes, and problems at home. Those who are born on this day are good workers, intuitive, and creative.",
         TzolkinDayName::Ik => "The etymology of IQ' comes from the word “wind,” “air,” “spirit,” and “heart of the sky.” It means heavy showers and hurricanes. On this day, people ask for the end of suffering, illnesses, or problems at home. Those who are born on this day are emotional, sociable, considerate, and have a pleasant life.",
         TzolkinDayName::Akbal => "The etymology of AQ'AB'AL comes from the word “darkness.” It means dawn and hand; it is the light of dawn and darkness. It is a day to ask for light to reach all things. It is the day for feelings of the heart. Those who are born on this day are brave hunters, humble, serious, precise, and can withstand criticism and rejection.",
@@ -79,43 +77,42 @@ pub fn detailed_meaning(&self) -> &'static str {
         TzolkinDayName::Kawak => "The etymology of KAWOQ comes from the word “thunder,” “ants,” and “woman.” It is the day to ask for success for projects and to heal mental illnesses in humans. It is the day to ask for prosperity on Earth. Those who are born on this day are good predictors of the future, and judges.",
         TzolkinDayName::Ajaw => "The etymology of AJPU' comes from the word “life,” “destiny,” “plants,” and “animals.” It is the Lord Sun. It means hunter, marksman, and walker. On this day, people ask for the fulfillment of the ideas suggested by the community. Those who are born on this day are good, talented, and affectionate, but at the same time, they are hot-tempered and judgmental."
     }
-}
+    }
 
-pub fn number(&self) -> i32 {
-    match self {
-        TzolkinDayName::Imix => 1,
-        TzolkinDayName::Ik => 2,
-        TzolkinDayName::Akbal => 3,
-        TzolkinDayName::Kan => 4,
-        TzolkinDayName::Chikchan => 5,
-        TzolkinDayName::Kimi => 6,
-        TzolkinDayName::Manik => 7,
-        TzolkinDayName::Lamat => 8,
-        TzolkinDayName::Muluk => 9,
-        TzolkinDayName::Ok => 10,
-        TzolkinDayName::Chuwen => 11,
-        TzolkinDayName::Eb => 12,
-        TzolkinDayName::Ben => 13,
-        TzolkinDayName::Ix => 14,
-        TzolkinDayName::Men => 15,
-        TzolkinDayName::Kib => 16,
-        TzolkinDayName::Kaban => 17,
-        TzolkinDayName::Etznab => 18,
-        TzolkinDayName::Kawak => 19,
-        TzolkinDayName::Ajaw => 20,
+    pub fn number(&self) -> i32 {
+        match self {
+            TzolkinDayName::Imix => 1,
+            TzolkinDayName::Ik => 2,
+            TzolkinDayName::Akbal => 3,
+            TzolkinDayName::Kan => 4,
+            TzolkinDayName::Chikchan => 5,
+            TzolkinDayName::Kimi => 6,
+            TzolkinDayName::Manik => 7,
+            TzolkinDayName::Lamat => 8,
+            TzolkinDayName::Muluk => 9,
+            TzolkinDayName::Ok => 10,
+            TzolkinDayName::Chuwen => 11,
+            TzolkinDayName::Eb => 12,
+            TzolkinDayName::Ben => 13,
+            TzolkinDayName::Ix => 14,
+            TzolkinDayName::Men => 15,
+            TzolkinDayName::Kib => 16,
+            TzolkinDayName::Kaban => 17,
+            TzolkinDayName::Etznab => 18,
+            TzolkinDayName::Kawak => 19,
+            TzolkinDayName::Ajaw => 20,
+        }
     }
 }
-}
 
-pub fn construct(date: &LongDate) -> TzolkinDate {
+pub fn compute(date: &LongDate) -> TzolkinDate {
     let days = date.days_since_epoch;
     let n = (days + 4) % 13;
-    let thirteen = if n == 0 {13} else {n};
-    
+    let thirteen = if n == 0 { 13 } else { n };
+
     let ajaw = TzolkinDayName::Ajaw.number() as i64;
 
-    let name = 
-        (days + ajaw) % 20;
+    let name = (days + ajaw) % 20;
     let tzolk = TzolkinDayName::of_number(name);
-    (thirteen, tzolk)
+    TzolkinDate(thirteen, tzolk)
 }

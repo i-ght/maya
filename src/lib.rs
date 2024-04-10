@@ -43,7 +43,8 @@ pub enum TzolkinDayName {
     Ajaw
 }
 
-pub type TzolkinDate = (TzolkinNumber, TzolkinDayName);
+#[derive(Debug)]
+pub struct TzolkinDate(pub TzolkinNumber, pub TzolkinDayName);
 
 pub type HaabDay = i64;
 
@@ -70,14 +71,11 @@ pub enum HaabMonth {
     Wayeb
 }
 
-pub type HaabDate = (HaabDay, HaabMonth);
+#[derive(Debug)]
+pub struct HaabDate(pub HaabDay, pub HaabMonth);
 
 #[derive(Debug)]
-pub struct RoundDate {
-    pub tzolkin: TzolkinDate,
-    pub haab: HaabDate,
-    pub long: LongDate
-}
+pub struct RoundDate(pub TzolkinDate, pub HaabDate);
 
 pub mod long;
 pub mod tzolkin;
