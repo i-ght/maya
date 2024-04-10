@@ -1,13 +1,12 @@
-use crate::{haab, tzolkin, LongDate, MayaEpoch, RoundDate};
+use crate::{HaabDate, LongDate, MayaEpoch, RoundDate, TzolkinDate};
 
 impl From<&LongDate> for RoundDate {
     fn from(value: &LongDate) -> Self {
         RoundDate(
-            tzolkin::compute(value),
-            haab::compute(value)
+            TzolkinDate::new(value),
+            HaabDate::new(value)
         )
     }
-    
 }
 
 impl From<LongDate> for RoundDate {

@@ -78,17 +78,19 @@ impl HaabMonth {
     }
 }
 
-pub fn compute(date: &LongDate) -> HaabDate {
-    let days = date.days_since_epoch;
-    let head = match date.epoch {
-        MayaEpoch::BC3114 =>
-            8 + ((HaabMonth::Kumku.number()  - 1) * 20),
-        MayaEpoch::CE2012 =>
-            3 + ((HaabMonth::Kankin.number() - 1) * 20)
-    };
-    let day_of_haab = (days + head) % 365;
-    let day = day_of_haab % 20;
-    let month = (day_of_haab/20) + 1;
-    let haab_month = HaabMonth::of_number(month);
-    HaabDate(day, haab_month)
+impl HaabDate {
+    pub fn new(date: &LongDate) -> HaabDate {
+        let days = date.days_since_epoch;
+        let head = match date.epoch {
+            MayaEpoch::BC3114 =>
+                8 + ((HaabMonth::Kumku.number()  - 1) * 20),
+            MayaEpoch::CE2012 =>
+                3 + ((HaabMonth::Kankin.number() - 1) * 20)
+        };
+        let day_of_haab = (days + head) % 365;
+        let day = day_of_haab % 20;
+        let month = (day_of_haab/20) + 1;
+        let haab_month = HaabMonth::of_number(month);
+        HaabDate(day, haab_month)
+    }
 }

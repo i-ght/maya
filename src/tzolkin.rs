@@ -105,14 +105,16 @@ impl TzolkinDayName {
     }
 }
 
-pub fn compute(date: &LongDate) -> TzolkinDate {
-    let days = date.days_since_epoch;
-    let n = (days + 4) % 13;
-    let thirteen = if n == 0 { 13 } else { n };
-
-    let ajaw = TzolkinDayName::Ajaw.number() as i64;
-
-    let name = (days + ajaw) % 20;
-    let tzolk = TzolkinDayName::of_number(name);
-    TzolkinDate(thirteen, tzolk)
+impl TzolkinDate {
+    pub fn new(date: &LongDate) -> TzolkinDate {
+        let days = date.days_since_epoch;
+        let n = (days + 4) % 13;
+        let thirteen = if n == 0 { 13 } else { n };
+    
+        let ajaw = TzolkinDayName::Ajaw.number() as i64;
+    
+        let name = (days + ajaw) % 20;
+        let tzolk = TzolkinDayName::of_number(name);
+        TzolkinDate(thirteen, tzolk)
+    }
 }
