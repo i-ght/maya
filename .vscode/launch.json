@@ -7,8 +7,56 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug",
-            "program": "${workspaceFolder}/target/debug/maya",
+            "name": "Debug unit tests in library 'maya'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=maya"
+                ],
+                "filter": {
+                    "name": "maya",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'maya'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=maya",
+                    "--package=maya"
+                ],
+                "filter": {
+                    "name": "maya",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'maya'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=maya",
+                    "--package=maya"
+                ],
+                "filter": {
+                    "name": "maya",
+                    "kind": "bin"
+                }
+            },
             "args": [],
             "cwd": "${workspaceFolder}"
         }

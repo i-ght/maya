@@ -1,5 +1,3 @@
-use core::panic;
-
 use crate::{HaabDate, HaabMonth, LongDate, MayaEpoch};
 
 impl HaabMonth {
@@ -30,6 +28,7 @@ impl HaabMonth {
     }
     
     pub fn number(&self) -> i64 {
+        
         match self {
             HaabMonth::Pop => 1,
             HaabMonth::Wo => 2,

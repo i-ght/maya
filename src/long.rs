@@ -1,4 +1,4 @@
-use crate::{Day, LongDate, MayaEpoch, Month, Year};
+use crate::{LongDate, MayaEpoch};
 
 fn jd(y: i32, m: i32, d: i32) -> f64 {
     let (y, m, d) = (f64::from(y), f64::from(m), f64::from(d));
@@ -26,7 +26,7 @@ fn epoch_jd(epoch: &MayaEpoch) -> f64 {
     }
 }
 
-fn days_diff(epoch: &MayaEpoch, y: Day, m: Month, d: Year) -> i64 {
+fn days_diff(epoch: &MayaEpoch, y: i32, m: i32, d: i32) -> i64 {
     return (jd(y, m, d) - epoch_jd(epoch)) as i64;
 }
 
@@ -51,12 +51,11 @@ fn maya_digis(days: i64, place_index: usize) -> Vec<i64> {
 
 
 impl LongDate {
-    pub fn new(epoch: MayaEpoch, y: Year, m: Month, d: Day) -> LongDate {
+    pub fn new(epoch: MayaEpoch, y: i32, m: i32, d: i32) -> LongDate {
         let days = days_diff(&epoch, y, m, d);
         let places_needed = 5;
         let digis = maya_digis(days, places_needed);
         LongDate {
-            date: (y, m, d),
             digits: digis,
             days_since_epoch: days,
             epoch
